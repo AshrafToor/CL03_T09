@@ -1,0 +1,39 @@
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.year-buttons {
+    margin: 20px;
+}
+
+.year-buttons button {
+    background-color: #ffa07a;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.year-buttons button:hover {
+    background-color: #ff7f50;
+}
+
+.charts {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 30px;
+}
+
+.chart-container {
+    width: 400px;
+    height: 400px;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
