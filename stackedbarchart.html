@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Data Visualisation"/>
+    <meta name="keywords" content="HTML, CSS, D3"/>
+    <meta name="author" content="Ashraf Toor"/>
+    <title>Stacked Bar Chart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .chart {
+            width: 800px;
+            height: 400px;
+            margin: 20px auto;
+        }
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            padding: 5px;
+            font: 12px sans-serif;
+            background: #ffffff;
+            border: 1px solid #000000;
+            pointer-events: none;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Stacked Bar Chart</h1>
+
+    <div>
+        <label for="gender">Select Gender:</label>
+        <select id="gender">
+            <option value="both" selected>Both</option>
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="country">Select Country:</label>
+        <select id="country" multiple>
+            <!-- Country options will be populated dynamically -->
+        </select>
+    </div>
+
+    <div class="chart"></div>
+
+    <div class="tooltip"></div>
+
+    <script>
+
+        // Load data from CSV file
+        d3.csv("2017_2019_Mortality_Rates.csv").then(function(data) {
+
+            // Convert string numbers to numeric values
+            data.forEach(function(d) {
+                d.Men = +d.Men;
+                d.Women = +d.Women;
+            });
+
+            // Extract unique country names
+            var countries = Array.from(new Set(data.map(function(d) { return d.Country; })));
+
+            // Append country options to the select element
+            var countrySelect = d3.select("#country");
+            countries.forEach(function(country) {
+                countrySelect.append("option")
+                             .attr("value", country)
+                             .text(country);
+            });
+
+            // Function to update the chart based on selected filters
+            function updateChart() {
+                var selectedGender = d3.select("#gender").property("value");
+                var selectedCountries = d3.select("#country").selectAll("option:checked").nodes().map(option => option.value);
+
+                // Filter data based on selected gender and country
+                var filteredData = data.filter(function(d) {
+                    if (selectedGender === "both") {
+                        return selectedCountries.includes("All") || selectedCountries.includes(d.Country);
+                    } else {
+                        return (selectedGender === "Men" ? d.Men : d.Women) && (selectedCountries.includes("All") || selectedCountries.includes(d.Country));
+                    }
+                });
+
+                // Remove existing chart
+                d3.select(".chart").selectAll("*").remove();
+
+                // Create new chart with filtered data
+                var margin = { top: 20, right: 30, bottom: 50, left: 70 };
+                var width = 800 - margin.left - margin.right;
+                var height = 400 - margin.top - margin.bottom;
+
+                var svg = d3.select(".chart") // Selecting the div element with class "chart"
+                            .append("svg") // Appending an SVG element to the div
+                            .attr("width", width + margin.left + margin.right) // Setting the width attribute of the SVG
+                            .attr("height", height + margin.top + margin.bottom) // Setting the height attribute of the SVG
+                            .append("g")
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                var xScale = d3.scaleBand()
+                                .domain(filteredData.map(function(d) { return d.Country; }))
+                                .range([0, width])
+                                .paddingInner(0.1);
+
+                var yScale = d3.scaleLinear()
+                                .domain([0, d3.max(filteredData, function(d) { return d.Men + d.Women; })])
+                                .nice()
+                                .range([height, 0]);
+
+                svg.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(xScale));
+
+                svg.append("g")
+                    .call(d3.axisLeft(yScale));
+
+                var color = d3.scaleOrdinal(d3.schemeCategory10); // Color scale for bars
+
+                var stack = d3.stack()
+                    .keys(["Men", "Women"]);
+
+                var series = stack(filteredData);
+
+                var tooltip = d3.select("body").append("div")
+                                .attr("class", "tooltip")
+                                .style("opacity", 0);
+
+                var groups = svg.selectAll("g.stack")
+                                .data(series)
+                                .enter()
+                                .append("g")
+                                .attr("class", "stack")
+                                .style("fill", function(d, i) { return color(i); });
+
+                var rects = groups.selectAll("rect")
+                                .data(function(d) { return d; })
+                                .enter()
+                                .append("rect")
+                                .attr("x", function(d, i) { return xScale(filteredData[i].Country) + xScale.bandwidth() / 4; })
+                                .attr("y", function(d) { return yScale(d[1]); })
+                                .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
+                                .attr("width", xScale.bandwidth() / 2) // Width of the bars
+                                .on("mouseover", function(d) {  // Mouseover event
+                                    tooltip.transition()
+                                           .duration(200)
+                                           .style("opacity", .9);
+                                    tooltip.html((d.data[d.key]) + " " + (d.key)) // Display value and gender
+                                           .style("left", (d3.event.pageX) + "px")
+                                           .style("top", (d3.event.pageY - 28) + "px");
+                                })
+                                .on("mouseout", function(d) { // Mouseout event
+                                    tooltip.transition()
+                                           .duration(500)
+                                           .style("opacity", 0);
+                                });
+            }
+
+            // Initial chart rendering
+            updateChart();
+
+            // Event listeners for select elements
+            d3.select("#gender").on("change", updateChart);
+            d3.select("#country").on("change", updateChart);
+
+        });
+
+    </script>
+
+    <br>
+    <br>
+    <footer style="color:grey">COS30045 Data Visualisation<br>Joe Bloggs</footer> <!--Footer of webpage with color of text set as grey -->
+
+</body>
+</html>
