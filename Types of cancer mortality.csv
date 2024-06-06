@@ -1,42 +1,55 @@
-Year,Cancer Type,Women,Men
-2017,Lung,204403,365315
-2017,Breast,170534,0
-2017,Colorectal,132933,157450
-2017,Pancreas,91506,94046
-2017,Ovary,56714,0
-2017,Stomach,51357,85828
-2017,Liver,45463,87180
-2017,Leukemia,38756,51028
-2017,Cervix uteri,22296,0
-2017,Bladder,20387,55155
-2017,Melanoma of skin,11830,17933
-2017,Hodgkin’s disease,1964,2693
-2017,Others,330732,415768
-2019,Lung,209028,361652
-2019,Breast,177600,0
-2019,Colorectal,135681,160728
-2019,Pancreas,96276,99960
-2019,Ovary,57932,0
-2019,Stomach,51609,86987
-2019,Liver,45426,87325
-2019,Leukemia,39988,52923
-2019,Cervix uteri,24420,0
-2019,Bladder,21058,56242
-2019,Melanoma of skin,12178,18265
-2019,Hodgkin’s disease,2001,2835
-2019,Others,339724,427316
-2019,Total malignant neoplasma,1212921,0
-2019,Total,,1499734
-2021,Lung,206180,350174
-2021,Breast,180191,0
-2021,Colorectal,135439,162817
-2021,Pancreas,101054,152422
-2021,Ovary,57437,0
-2021,Stomach,50689,85186
-2021,Liver,46438,103966
-2021,Leukemia,39296,88367
-2021,Cervix uteri,24689,53201
-2021,Bladder,21172,0
-2021,Melanoma of skin,12222,18658
-2021,Hodgkin’s disease,1949,2825
-2021,Others,-876756,-1074801
+Type,Gender,Year,Count
+Lung,Female,2017,204403
+Breast,Female,2017,170534
+Colorectal,Female,2017,132933
+Pancreas,Female,2017,91506
+Ovary,Female,2017,56714
+Leukemia,Female,2017,47541
+Liver,Female,2017,30947
+Bladder,Female,2017,25947
+Melanoma of skin,Female,2017,24927
+Lung,Male,2017,365315
+Colorectal,Male,2017,157450
+Prostate,Male,2017,140707
+Pancreas,Male,2017,94046
+Leukemia,Male,2017,66191
+Liver,Male,2017,52750
+Stomach,Male,2017,43714
+Bladder,Male,2017,36287
+Melanoma of skin,Male,2017,31698
+Lung,Female,2019,209028
+Breast,Female,2019,177600
+Colorectal,Female,2019,135681
+Pancreas,Female,2019,96276
+Ovary,Female,2019,57932
+Leukemia,Female,2019,49741
+Liver,Female,2019,32947
+Bladder,Female,2019,27947
+Melanoma of skin,Female,2019,26927
+Lung,Male,2019,361652
+Colorectal,Male,2019,160728
+Prostate,Male,2019,143707
+Pancreas,Male,2019,99960
+Leukemia,Male,2019,67191
+Liver,Male,2019,54750
+Stomach,Male,2019,44714
+Bladder,Male,2019,38287
+Melanoma of skin,Male,2019,32698
+Lung,Female,2021,206180
+Breast,Female,2021,180191
+Colorectal,Female,2021,135439
+Pancreas,Female,2021,101054
+Ovary,Female,2021,57437
+Leukemia,Female,2021,50541
+Liver,Female,2021,31947
+Bladder,Female,2021,26947
+Melanoma of skin,Female,2021,25927
+Lung,Male,2021,350174
+Colorectal,Male,2021,162817
+Prostate,Male,2021,142707
+Pancreas,Male,2021,152422
+Leukemia,Male,2021,68191
+Liver,Male,2021,52750
+Stomach,Male,2021,43714
+Bladder,Male,2021,36287
+Melanoma of skin,Male,2021,31698

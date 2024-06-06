@@ -1,51 +1,113 @@
+// Function to load and parse CSV data
+function loadCSVData(callback) {
+    Papa.parse("Types of cancer mortality.csv", {
+        download: true,
+        header: true,
+        complete: function(results) {
+            callback(results.data);
+        }
+    });
+}
 
-const data2017 = {
-    women: {
-        labels: ['Lung', 'Breast', 'Colorectal', 'Pancreas', 'Ovary', 'Leukemia', 'Liver', 'Bladder', 'Melanoma of skin', 'Others'],
-        data: [204403, 170534, 132933, 91506, 56714, 47541, 30947, 25947, 24927, 17504]
-    },
-    men: {
-        labels: ['Lung', 'Colorectal', 'Prostate', 'Pancreas', 'Leukemia', 'Liver', 'Stomach', 'Bladder', 'Melanoma of skin', 'Others'],
-        data: [365315, 157450, 140707, 94046, 66191, 52750, 43714, 36287, 31698, 25137]
-    }
-};
+// Function to process CSV data and update charts
+function processData(data, year) {
+    let womenData = [];
+    let menData = [];
+    let commonLabels = [];
 
-const data2019 = {
-    women: {
-        labels: ['Lung', 'Breast', 'Colorectal', 'Pancreas', 'Ovary', 'Leukemia', 'Liver', 'Bladder', 'Melanoma of skin', 'Others'],
-        data: [209028, 177600, 135681, 96276, 57932, 49741, 32947, 27947, 26927, 19504]
-    },
-    men: {
-        labels: ['Lung', 'Colorectal', 'Prostate', 'Pancreas', 'Leukemia', 'Liver', 'Stomach', 'Bladder', 'Melanoma of skin', 'Others'],
-        data: [361652, 160728, 143707, 99960, 67191, 54750, 44714, 38287, 32698, 26137]
-    }
-};
+    data.forEach(row => {
+        if (row.Year === year) {
+            if (row.Gender === 'Female') {
+                commonLabels.push(row.Type);
+                womenData.push(parseInt(row.Count));
+            } else if (row.Gender === 'Male') {
+                menData.push(parseInt(row.Count));
+            }
+        }
+    });
 
-const data2021 = {
-    women: {
-        labels: ['Lung', 'Breast', 'Colorectal', 'Pancreas', 'Ovary', 'Leukemia', 'Liver', 'Bladder', 'Melanoma of skin', 'Others'],
-        data: [206180, 180191, 135439, 101054, 57437, 50541, 31947, 26947, 25927, 18504]
-    },
-    men: {
-        labels: ['Lung', 'Colorectal', 'Prostate', 'Pancreas', 'Leukemia', 'Liver', 'Stomach', 'Bladder', 'Melanoma of skin', 'Others'],
-        data: [350174, 162817, 142707, 152422, 68191, 52750, 43714, 36287, 31698, 25137]
-    }
-};
+    updateCharts(commonLabels, womenData, menData);
+    updateLegend(commonLabels);
+}
 
+// Function to update charts
+function updateCharts(labels, womenData, menData) {
+    womenChart.data.labels = labels;
+    womenChart.data.datasets[0].data = womenData;
+    womenChart.update();
+
+    menChart.data.labels = labels;
+    menChart.data.datasets[0].data = menData;
+    menChart.update();
+}
+
+// Function to update common legend
+function updateLegend(labels) {
+    const legendContainer = document.getElementById('commonLegend');
+    legendContainer.innerHTML = '';
+
+    labels.forEach((label, index) => {
+        const legendItem = document.createElement('div');
+        legendItem.className = 'common-legend-item';
+        legendItem.onclick = () => toggleVisibility(index);
+
+        const colorBox = document.createElement('span');
+        colorBox.style.backgroundColor = womenChart.data.datasets[0].backgroundColor[index];
+
+        const labelText = document.createTextNode(label);
+
+        legendItem.appendChild(colorBox);
+        legendItem.appendChild(labelText);
+        legendContainer.appendChild(legendItem);
+    });
+}
+
+// Function to toggle visibility of data points
+function toggleVisibility(index) {
+    const visibility = womenChart.getDatasetMeta(0).data[index].hidden === null ? !womenChart.data.datasets[0].hidden : null;
+
+    womenChart.getDatasetMeta(0).data[index].hidden = visibility;
+    menChart.getDatasetMeta(0).data[index].hidden = visibility;
+
+    womenChart.update();
+    menChart.update();
+}
+
+// Load and initialize charts with default year data
+loadCSVData(function(data) {
+    processData(data, '2017'); // Initialize with 2017 data by default
+});
+
+// Event listener to update charts based on year
+document.querySelectorAll('.year-buttons button').forEach(button => {
+    button.addEventListener('click', function() {
+        let year = this.innerText;
+        loadCSVData(function(data) {
+            processData(data, year);
+        });
+    });
+});
+
+// Chart.js initialization
 const ctxWomen = document.getElementById('womenChart').getContext('2d');
 const ctxMen = document.getElementById('menChart').getContext('2d');
 
 let womenChart = new Chart(ctxWomen, {
     type: 'pie',
     data: {
-        labels: data2017.women.labels,
+        labels: [],
         datasets: [{
             label: 'Women',
-            data: data2017.women.data,
+            data: [],
             backgroundColor: ['#3e95cd', '#8e5ea2', '#3cba9f', '#e8c3b9', '#c45850', '#f39c12', '#d35400', '#1abc9c', '#2ecc71', '#95a5a6']
         }]
     },
     options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
         title: {
             display: true,
             text: 'Cancer Types in Women'
@@ -56,29 +118,22 @@ let womenChart = new Chart(ctxWomen, {
 let menChart = new Chart(ctxMen, {
     type: 'pie',
     data: {
-        labels: data2017.men.labels,
+        labels: [],
         datasets: [{
             label: 'Men',
-            data: data2017.men.data,
+            data: [],
             backgroundColor: ['#8e5ea2', '#3e95cd', '#3cba9f', '#e8c3b9', '#c45850', '#f39c12', '#d35400', '#1abc9c', '#2ecc71', '#95a5a6']
         }]
     },
     options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
         title: {
             display: true,
             text: 'Cancer Types in Men'
         }
     }
 });
-
-function updateCharts(year) {
-    let data = year === '2019' ? data2019 : year === '2021' ? data2021 : data2017;
-
-    womenChart.data.labels = data.women.labels;
-    womenChart.data.datasets[0].data = data.women.data;
-    womenChart.update();
-
-    menChart.data.labels = data.men.labels;
-    menChart.data.datasets[0].data = data.men.data;
-    menChart.update();
-}
