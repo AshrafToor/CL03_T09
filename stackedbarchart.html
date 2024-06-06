@@ -24,6 +24,9 @@
             pointer-events: none;
             opacity: 0;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -32,148 +35,251 @@
     <h1>Stacked Bar Chart</h1>
 
     <div>
-        <label for="gender">Select Gender:</label>
-        <select id="gender">
-            <option value="both" selected>Both</option>
-            <option value="Men">Men</option>
-            <option value="Women">Women</option>
-        </select>
+        <button id="btn2017">2017</button>
+        <button id="btn2019">2019</button>
     </div>
 
-    <div>
-        <label for="country">Select Country:</label>
-        <select id="country" multiple>
-            <!-- Country options will be populated dynamically -->
-        </select>
+    <h2 id="yearHeading" class="hidden"></h2>
+
+    <div id="controls" class="hidden">
+        <div>
+            <label>Select Gender:</label><br>
+            <label><input type="checkbox" class="gender" value="Men"> Men</label>
+            <label><input type="checkbox" class="gender" value="Women"> Women</label>
+        </div>
+
+        <div>
+            <label>Select Country:</label><br>
+            <div id="country"></div>
+        </div>
     </div>
 
-    <div class="chart"></div>
+    <div class="chart hidden"></div>
 
     <div class="tooltip"></div>
 
     <script>
-
-        // Load data from CSV file
-        d3.csv("2017_2019_Mortality_Rates.csv").then(function(data) {
-
-            // Convert string numbers to numeric values
-            data.forEach(function(d) {
-                d.Men = +d.Men;
-                d.Women = +d.Women;
-            });
-
-            // Extract unique country names
-            var countries = Array.from(new Set(data.map(function(d) { return d.Country; })));
-
-            // Append country options to the select element
-            var countrySelect = d3.select("#country");
-            countries.forEach(function(country) {
-                countrySelect.append("option")
-                             .attr("value", country)
-                             .text(country);
-            });
-
-            // Function to update the chart based on selected filters
-            function updateChart() {
-                var selectedGender = d3.select("#gender").property("value");
-                var selectedCountries = d3.select("#country").selectAll("option:checked").nodes().map(option => option.value);
-
-                // Filter data based on selected gender and country
-                var filteredData = data.filter(function(d) {
-                    if (selectedGender === "both") {
-                        return selectedCountries.includes("All") || selectedCountries.includes(d.Country);
-                    } else {
-                        return (selectedGender === "Men" ? d.Men : d.Women) && (selectedCountries.includes("All") || selectedCountries.includes(d.Country));
-                    }
+        function loadData(file, year) {
+            d3.csv(file).then(function(data) {
+                // Convert string numbers to numeric values
+                data.forEach(function(d) {
+                    d.Men = +d.Men;
+                    d.Women = +d.Women;
                 });
 
-                // Remove existing chart
-                d3.select(".chart").selectAll("*").remove();
+                // Extract unique country names
+                var countries = Array.from(new Set(data.map(function(d) { return d.Country; })));
 
-                // Create new chart with filtered data
-                var margin = { top: 20, right: 30, bottom: 50, left: 70 };
-                var width = 800 - margin.left - margin.right;
-                var height = 400 - margin.top - margin.bottom;
+                // Append country checkboxes to the div element
+                var countryDiv = d3.select("#country");
+                countryDiv.selectAll("*").remove();
+                countries.forEach(function(country) {
+                    countryDiv.append("label")
+                              .append("input")
+                              .attr("type", "checkbox")
+                              .attr("class", "country")
+                              .attr("value", country);
+                    countryDiv.append("span").text(" " + country + " ");
+                    countryDiv.append("br");
+                });
 
-                var svg = d3.select(".chart") // Selecting the div element with class "chart"
-                            .append("svg") // Appending an SVG element to the div
-                            .attr("width", width + margin.left + margin.right) // Setting the width attribute of the SVG
-                            .attr("height", height + margin.top + margin.bottom) // Setting the height attribute of the SVG
-                            .append("g")
-                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                // Function to update the chart based on selected filters
+                function updateChart() {
+                    var selectedGenders = d3.selectAll(".gender:checked").nodes().map(function(d) { return d.value; });
+                    var selectedCountries = d3.selectAll(".country:checked").nodes().map(function(d) { return d.value; });
 
-                var xScale = d3.scaleBand()
-                                .domain(filteredData.map(function(d) { return d.Country; }))
-                                .range([0, width])
-                                .paddingInner(0.1);
+                    // Filter data based on selected gender and country
+                    var filteredData = data.filter(function(d) {
+                        return (selectedCountries.length === 0 || selectedCountries.includes(d.Country));
+                    });
 
-                var yScale = d3.scaleLinear()
-                                .domain([0, d3.max(filteredData, function(d) { return d.Men + d.Women; })])
-                                .nice()
-                                .range([height, 0]);
+                    // If no gender is selected, use both
+                    if (selectedGenders.length === 0) {
+                        selectedGenders = ["Men", "Women"];
+                    }
 
-                svg.append("g")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(xScale));
+                    // Remove existing chart
+                    d3.select(".chart").selectAll("*").remove();
 
-                svg.append("g")
-                    .call(d3.axisLeft(yScale));
+                    // Create new chart with filtered data
+                    var margin = { top: 20, right: 30, bottom: 50, left: 70 }; // Adjusted bottom margin
+                    var width = 800 - margin.left - margin.right;
+                    var height = 400 - margin.top - margin.bottom;
 
-                var color = d3.scaleOrdinal(d3.schemeCategory10); // Color scale for bars
-
-                var stack = d3.stack()
-                    .keys(["Men", "Women"]);
-
-                var series = stack(filteredData);
-
-                var tooltip = d3.select("body").append("div")
-                                .attr("class", "tooltip")
-                                .style("opacity", 0);
-
-                var groups = svg.selectAll("g.stack")
-                                .data(series)
-                                .enter()
+                    var svg = d3.select(".chart")
+                                .append("svg")
+                                .attr("width", width + margin.left + margin.right)
+                                .attr("height", height + margin.top + margin.bottom)
                                 .append("g")
-                                .attr("class", "stack")
-                                .style("fill", function(d, i) { return color(i); });
+                                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                var rects = groups.selectAll("rect")
-                                .data(function(d) { return d; })
-                                .enter()
-                                .append("rect")
-                                .attr("x", function(d, i) { return xScale(filteredData[i].Country) + xScale.bandwidth() / 4; })
-                                .attr("y", function(d) { return yScale(d[1]); })
-                                .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
-                                .attr("width", xScale.bandwidth() / 2) // Width of the bars
-                                .on("mouseover", function(d) {  // Mouseover event
-                                    tooltip.transition()
-                                           .duration(200)
-                                           .style("opacity", .9);
-                                    tooltip.html((d.data[d.key]) + " " + (d.key)) // Display value and gender
-                                           .style("left", (d3.event.pageX) + "px")
-                                           .style("top", (d3.event.pageY - 28) + "px");
-                                })
-                                .on("mouseout", function(d) { // Mouseout event
-                                    tooltip.transition()
-                                           .duration(500)
-                                           .style("opacity", 0);
-                                });
-            }
+                    var xScale = d3.scaleBand()
+                                    .domain(filteredData.map(function(d) { return d.Country; }))
+                                    .range([0, width])
+                                    .paddingInner(0.1);
 
-            // Initial chart rendering
-            updateChart();
+                    var yScale = d3.scaleLinear()
+                                    .domain([0, d3.max(filteredData, function(d) {
+                                        return selectedGenders.reduce(function(sum, gender) { return sum + d[gender]; }, 0);
+                                    })])
+                                    .nice()
+                                    .range([height, 0]);
 
-            // Event listeners for select elements
-            d3.select("#gender").on("change", updateChart);
-            d3.select("#country").on("change", updateChart);
+                    svg.append("g")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(d3.axisBottom(xScale));
 
+                    svg.append("g")
+                        .call(d3.axisLeft(yScale));
+
+                    var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+                    var stack = d3.stack()
+                        .keys(selectedGenders);
+
+                    var series = stack(filteredData);
+
+                    var tooltip = d3.select(".tooltip");
+
+                    var groups = svg.selectAll("g.stack")
+                                    .data(series)
+                                    .enter()
+                                    .append("g")
+                                    .attr("class", "stack")
+                                    .style("fill", function(d, i) { return color(i); });
+
+                    var rects = groups.selectAll("rect")
+                                    .data(function(d) { return d; })
+                                    .enter()
+                                    .append("rect")
+                                    .attr("x", function(d, i) { return xScale(filteredData[i].Country) + xScale.bandwidth() / 4; })
+                                    .attr("y", function(d) { return yScale(d[1]); })
+                                    .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
+                                    .attr("width", xScale.bandwidth() / 2)
+                                    .on("mouseover", function(event, d) {
+                                        tooltip.transition()
+                                               .duration(200)
+                                               .style("opacity", .9);
+                                        var gender = this.parentNode.__data__.key; // Get the gender (Men/Women) from the parent node data
+                                        tooltip.html(d[1] - d[0] + " " + gender + " (" + d.data.Country + ")")
+                                               .style("left", (event.pageX) + "px")
+                                               .style("top", (event.pageY - 28) + "px");
+                                    })
+                                    .on("mouseout", function() {
+                                        tooltip.transition()
+                                               .duration(500)
+                                               .style("opacity", 0);
+                                    });
+                }
+
+                // Initial chart rendering
+                function initialChart() {
+                    // Remove existing chart
+                    d3.select(".chart").selectAll("*").remove();
+
+                    // Create new chart with full data
+                    var margin = { top: 20, right: 30, bottom: 50, left: 70 }; // Adjusted bottom margin
+                    var width = 800 - margin.left - margin.right;
+                    var height = 400 - margin.top - margin.bottom;
+
+                    var svg = d3.select(".chart")
+                                .append("svg")
+                                .attr("width", width + margin.left + margin.right)
+                                .attr("height", height + margin.top + margin.bottom)
+                                .append("g")
+                                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                    var xScale = d3.scaleBand()
+                                    .domain(data.map(function(d) { return d.Country; }))
+                                    .range([0, width])
+                                    .paddingInner(0.1);
+
+                    var yScale = d3.scaleLinear()
+                                    .domain([0, d3.max(data, function(d) { return d.Men + d.Women; })])
+                                    .nice()
+                                    .range([height, 0]);
+
+                    svg.append("g")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(d3.axisBottom(xScale));
+
+                    svg.append("g")
+                        .call(d3.axisLeft(yScale));
+
+                    var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+                    var stack = d3.stack()
+                        .keys(["Men", "Women"]);
+
+                    var series = stack(data);
+
+                    var tooltip = d3.select(".tooltip");
+
+                    var groups = svg.selectAll("g.stack")
+                                    .data(series)
+                                    .enter()
+                                    .append("g")
+                                    .attr("class", "stack")
+                                    .style("fill", function(d, i) { return color(i); });
+
+                    var rects = groups.selectAll("rect")
+                                    .data(function(d) { return d; })
+                                    .enter()
+                                    .append("rect")
+                                    .attr("x", function(d, i) { return xScale(data[i].Country) + xScale.bandwidth() / 4; })
+                                    .attr("y", function(d) { return yScale(d[1]); })
+                                    .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
+                                    .attr("width", xScale.bandwidth() / 2)
+                                    .on("mouseover", function(event, d) {
+                                        tooltip.transition()
+                                               .duration(200)
+                                               .style("opacity", .9);
+                                        var gender = this.parentNode.__data__.key;
+                                        tooltip.html(d[1] - d[0] + " " + gender + " (" + d.data.Country + ")")
+                                               .style("left", (event.pageX) + "px")
+                                               .style("top", (event.pageY - 28) + "px");
+                                    })
+                                    .on("mouseout", function() {
+                                        tooltip.transition()
+                                               .duration(500)
+                                               .style("opacity", 0);
+                                    });
+                }
+
+                 // Initial chart rendering
+                initialChart();
+
+                // Event listeners for checkboxes
+                d3.selectAll(".gender").on("change", updateChart);
+                d3.selectAll(".country").on("change", updateChart);
+            });
+        }
+
+        document.getElementById("btn2017").addEventListener("click", function() {
+            loadData("2017_Mortality_Rates.csv", 2017);
+            document.getElementById("yearHeading").innerText = "Year 2017";
+            document.getElementById("yearHeading").classList.remove("hidden");
+            document.getElementById("controls").classList.remove("hidden");
+            document.querySelector(".chart").classList.remove("hidden");
         });
+
+        document.getElementById("btn2019").addEventListener("click", function() {
+            loadData("2019_Mortality_Rates.csv", 2019);
+            document.getElementById("yearHeading").innerText = "Year 2019";
+            document.getElementById("yearHeading").classList.remove("hidden");
+            document.getElementById("controls").classList.remove("hidden");
+            document.querySelector(".chart").classList.remove("hidden");
+        });
+
+        // Initially hide chart and controls
+        document.getElementById("controls").classList.add("hidden");
+        document.querySelector(".chart").classList.add("hidden");
 
     </script>
 
     <br>
     <br>
-    <footer style="color:grey">COS30045 Data Visualisation<br>Joe Bloggs</footer> <!--Footer of webpage with color of text set as grey -->
+    <footer style="color:grey">COS30045 Data Visualisation<br>Joe Bloggs</footer>
 
 </body>
 </html>
