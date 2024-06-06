@@ -158,7 +158,8 @@
                                     .attr("width", xScale.bandwidth() / 2)
                                     .on("mouseover", function(event, d) {
                                         tooltip.transition()
-                                               .duration(200)
+                                               .duration(1000)
+											   .ease(d3.easeCubicInOut)
                                                .style("opacity", .9);
                                         var gender = this.parentNode.__data__.key; // Get the gender (Men/Women) from the parent node data
                                         tooltip.html(d[1] - d[0] + " " + gender + " (" + d.data.Country + ")")
@@ -256,7 +257,7 @@
         }
 
         document.getElementById("btn2017").addEventListener("click", function() {
-            loadData("2017_Mortality_Rates.csv", 2017);
+            loadData("Data/2017_Mortality_Rates.csv", 2017);
             document.getElementById("yearHeading").innerText = "Year 2017";
             document.getElementById("yearHeading").classList.remove("hidden");
             document.getElementById("controls").classList.remove("hidden");
@@ -264,7 +265,7 @@
         });
 
         document.getElementById("btn2019").addEventListener("click", function() {
-            loadData("2019_Mortality_Rates.csv", 2019);
+            loadData("Data/2019_Mortality_Rates.csv", 2019);
             document.getElementById("yearHeading").innerText = "Year 2019";
             document.getElementById("yearHeading").classList.remove("hidden");
             document.getElementById("controls").classList.remove("hidden");

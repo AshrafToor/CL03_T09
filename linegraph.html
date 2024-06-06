@@ -2,146 +2,293 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="description" content="Data Visualisation"/>
-    <meta name="keywords" content="HTML, CSS, D3"/>
-    <meta name="author" content="Ashraf Toor"/>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Data Visualisation" />
+    <meta name="keywords" content="HTML, CSS, D3" />
+    <meta name="author" content="Ashraf Toor" />
     <title>Line Graph</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
-	.area {
-		fill: lightblue;
-		opacity: 0.7;
-	}
+        .area {
+            fill: lightblue;
+            opacity: 0.7;
+        }
 
-	.line {
-		fill: none;
-		stroke: steelblue;
-		stroke-width: 2px;
-	}
+        .line {
+            fill: none;
+            stroke-width: 2px;
+        }
 
-	.halfMilMark {
-		stroke: red;
-		stroke-dasharray: 5,5;
-	}
+        .halfMilMark {
+            stroke: red;
+            stroke-dasharray: 5, 5;
+        }
 
-	.halfMilLabel {
-		fill: red;
-		font-size: 12px;
-	}
+        .halfMilLabel {
+            fill: red;
+            font-size: 12px;
+        }
 
-	.axis text {
-		font-size: 12px;
-	}
+        .axis text {
+            font-size: 12px;
+        }
 
-	.axis path,
-	.axis line {
-		fill: none;
-		stroke: black;
-		shape-rendering: crispEdges;
-	}
-	</style>
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            width: auto;
+            padding: 5px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0;
+            border-radius: 5px;
+            pointer-events: none;
+            display: none;
+        }
+
+        .mouse-over-dot {
+            fill: orange;
+            stroke: darkorange;
+            stroke-width: 2px;
+            r: 5;
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
 
     <h1>Line Graph</h1>
-	<p id="chart"></p>
-	<script>
-		var w = 850; // Width
-		var h = 400; // Height
-		var padding = 55; // Padding
-		var dataset; // Dataset
 
-		d3.csv("Estimated_Deaths.csv", function(d) {
-			return {
-				year: +d.Year,
-				country: d.Country,
-				cases: +d.Cases
-			};
-		}).then(function(data) {
-			dataset = data;
+    <!-- Checkboxes for Country Selection -->
+    <div id="countryCheckboxes"></div>
 
-			var countries = Array.from(new Set(dataset.map(function(d) {
-				return d.country;
-			})));
+    <p id="chart"></p>
 
-			var colors = d3.scaleOrdinal(d3.schemeCategory10);
+    <!-- Tooltip container -->
+    <div class="tooltip" id="tooltip"></div>
 
-			var xScale = d3.scaleLinear()
-				.domain([d3.min(dataset, function(d) { return d.year; }), d3.max(dataset, function(d) { return d.year; })])
-				.range([padding, w - padding]);
+    <script>
+        var w = 1200; // Further Increased Width
+        var h = 400; // Height
+        var padding = 55; // Padding
+        var rightPadding = 200; // Further Increased Right Padding
+        var dataset; // Dataset
 
-			var yScale = d3.scaleLinear()
-				.domain([0, d3.max(dataset, function(d) { return d.cases; })])
-				.range([h - padding, padding]);
+        // Load the data
+        d3.csv("Estimated_Deaths.csv", function (d) {
+            return {
+                year: +d.Year,
+                country: d.Country,
+                cases: +d.Cases
+            };
+        }).then(function (data) {
+            dataset = data;
 
-			var svg = d3.select("#chart")
-				.append("svg")
-				.attr("width", w)
-				.attr("height", h);
+            var countries = Array.from(new Set(dataset.map(function (d) {
+                return d.country;
+            })));
 
-			countries.forEach(function(country) {
-				var countryData = dataset.filter(function(d) {
-					return d.country === country;
-				});
+            var colors = d3.scaleOrdinal(d3.schemeCategory10);
 
-				var line = d3.line()
-					.x(function(d) { return xScale(d.year); })
-					.y(function(d) { return yScale(d.cases); });
+            var xScale = d3.scaleLinear()
+                .domain([d3.min(dataset, function (d) { return d.year; }), d3.max(dataset, function (d) { return d.year; })])
+                .range([padding, w - rightPadding]);
 
-				svg.append("path")
-					.datum(countryData)
-					.attr("class", "line")
-					.attr("d", line)
-					.style("stroke", function() { return colors(country); });
+            var yScale = d3.scaleLinear()
+                .domain([0, d3.max(dataset, function (d) { return d.cases; })])
+                .range([h - padding, padding]);
 
-				svg.append("text")
-					.datum(countryData[countryData.length - 1])
-					.attr("x", function(d) { return xScale(d.year) + 10; })
-					.attr("y", function(d) { return yScale(d.cases); })
-					.text(country)
-					.style("font-size", "12px")
-					.style("fill", function() { return colors(country); });
-			});
+            var svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", w)
+                .attr("height", h);
 
-			var xAxis = d3.axisBottom()
-				.scale(xScale)
-				.ticks(8)
-				.tickFormat(d3.format("d"));
+            var line = d3.line()
+                .x(function (d) { return xScale(d.year); })
+                .y(function (d) { return yScale(d.cases); });
 
-			var yAxis = d3.axisLeft()
-				.scale(yScale)
-				.ticks(10);
+            // Create tooltip
+            var tooltip = d3.select("#tooltip");
 
-			svg.append("g")
-				.attr("class", "axis")
-				.attr("transform", "translate(0," + (h - padding) + ")")
-				.call(xAxis);
+            // Create a group for mouseover dots
+            var dotGroup = svg.append("g").attr("class", "mouse-over-dots");
 
-			svg.append("g")
-				.attr("class", "axis")
-				.attr("transform", "translate(" + padding + ",0)")
-				.call(yAxis);
+            // Update the chart with selected countries
+            function updateChart(selectedCountries) {
+                var countryLines = svg.selectAll(".line")
+                    .data(selectedCountries.map(function (country) {
+                        return {
+                            country: country,
+                            values: dataset.filter(function (d) {
+                                return d.country === country;
+                            })
+                        };
+                    }), function (d) { return d.country; });
 
-			svg.append("line")
-				.attr("class", "halfMilMark")
-				.attr("x1", padding)
-				.attr("y1", yScale(500000))
-				.attr("x2", w)
-				.attr("y2", yScale(500000));
+                countryLines.exit()
+                    .transition()
+                    .duration(1000)
+                    .attr("opacity", 0)
+                    .remove();
 
-			svg.append("text")
-				.attr("class", "halfMilLabel")
-				.attr("x", padding + 10)
-				.attr("y", yScale(500000) - 7)
-				.text("Half a million cases");
-		});
-		
-	</script>
+                countryLines.enter()
+                    .append("path")
+                    .attr("class", "line")
+                    .attr("d", function (d) { return line(d.values); })
+                    .attr("stroke", function (d) { return colors(d.country); })
+                    .attr("opacity", 0)
+                    .on("mouseover", function (event, d) {
+                        tooltip.transition().duration(200).style("opacity", .9).style("display", "block");
+                    })
+                    .on("mousemove", function (event, d) {
+                        var mouseX = d3.pointer(event, this)[0];
+                        var year = Math.round(xScale.invert(mouseX));
+                        var dataPoint = d.values.find(function (point) { return point.year === year; });
+
+                        if (dataPoint) {
+                            tooltip.html(dataPoint.country + "<br/>Year: " + dataPoint.year + "<br/>Cases: " + dataPoint.cases)
+                                .style("left", (event.pageX + 10) + "px")
+                                .style("top", (event.pageY - 28) + "px");
+
+                            dotGroup.selectAll("circle").remove();
+                            dotGroup.append("circle")
+                                .attr("class", "mouse-over-dot")
+                                .attr("cx", xScale(dataPoint.year))
+                                .attr("cy", yScale(dataPoint.cases))
+                                .style("display", "block");
+                        }
+                    })
+                    .on("mouseout", function (event, d) {
+                        tooltip.transition().duration(500).style("opacity", 0).style("display", "none");
+                        dotGroup.selectAll("circle").style("display", "none");
+                    })
+                    .transition()
+                    .duration(1000)
+                    .attr("opacity", 1);
+
+                countryLines.transition()
+                    .duration(1000)
+                    .attr("d", function (d) { return line(d.values); })
+                    .attr("stroke", function (d) { return colors(d.country); });
+
+                var countryLabels = svg.selectAll(".countryLabel")
+                    .data(selectedCountries.map(function (country) {
+                        var values = dataset.filter(function (d) {
+                            return d.country === country;
+                        });
+                        return {
+                            country: country,
+                            lastValue: values[values.length - 1]
+                        };
+                    }), function (d) { return d.country; });
+
+                countryLabels.exit()
+                    .transition()
+                    .duration(1000)
+                    .attr("opacity", 0)
+                    .remove();
+
+                countryLabels.enter()
+                    .append("text")
+                    .attr("class", "countryLabel")
+                    .attr("x", function (d) { return Math.min(xScale(d.lastValue.year) + 10, w - rightPadding); }) 
+                    .attr("y", function (d) { return yScale(d.lastValue.cases); })
+                    .attr("fill", function (d) { return colors(d.country); })
+                    .attr("opacity", 0)
+                    .transition()
+                    .duration(1000)
+                    .attr("opacity", 1)
+                    .text(function (d) { return d.country; });
+
+                countryLabels.transition()
+                    .duration(1000)
+                    .attr("x", function (d) { return Math.min(xScale(d.lastValue.year) + 10, w - rightPadding); })
+                    .attr("y", function (d) { return yScale(d.lastValue.cases); })
+                    .attr("fill", function (d) { return colors(d.country); })
+                    .text(function (d) { return d.country; });
+            }
+
+            function createCheckboxes() {
+                var checkboxContainer = d3.select("#countryCheckboxes");
+
+                checkboxContainer.selectAll("input")
+                    .data(countries)
+                    .enter()
+                    .append("div")
+                    .attr("class", "checkbox")
+                    .each(function (country) {
+                        d3.select(this).append("input")
+                            .attr("type", "checkbox")
+                            .attr("value", country)
+                            .attr("id", "checkbox-" + country)
+                            .on("change", updateSelectedCountries);
+
+                        d3.select(this).append("label")
+                            .attr("for", "checkbox-" + country)
+                            .text(country);
+                    });
+            }
+
+            function updateSelectedCountries() {
+                var selectedCountries = d3.selectAll("#countryCheckboxes input:checked")
+                    .nodes()
+                    .map(function (checkbox) {
+                        return checkbox.value;
+                    });
+
+                updateChart(selectedCountries);
+            }
+
+            createCheckboxes();
+            updateChart(countries); 
+
+            var xAxis = d3.axisBottom()
+                .scale(xScale)
+                .ticks(8)
+                .tickFormat(d3.format("d"));
+
+            var yAxis = d3.axisLeft()
+                .scale(yScale)
+                .ticks(10);
+
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (h - padding) + ")")
+                .call(xAxis);
+
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + padding + ",0)")
+                .call(yAxis);
+
+            svg.append("line")
+                .attr("class", "halfMilMark")
+                .attr("x1", padding)
+                .attr("y1", yScale(500000))
+                .attr("x2", w)
+                .attr("y2", yScale(500000));
+
+            svg.append("text")
+                .attr("class", "halfMilLabel")
+                .attr("x", padding + 10)
+                .attr("y", yScale(500000) - 7)
+                .text("Half a million deaths");
+        });
+
+    </script>
 
     <br>
     <br>
     <footer style="color:grey">COS30045 Data Visualisation<br>Joe Bloggs</footer>
 
 </body>
+
 </html>

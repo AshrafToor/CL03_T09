@@ -15,14 +15,23 @@
 	<h1>COS30045 - Data Visualisation</h1>
 	<h2>Global Health Wallet: Tracking Expenditure Across Borders</h2>
 	<button   onclick="openBarGraph()"> Bar Graph </button>
-	
-	<button> Line Graph </button>
-	<button> Pie Chart </button>
+	<button   onclick="openLineGraph()"> Line Graph </button>
+	<button   onclick="openPieChart()"> Pie Chart </button>
+	<button   onclick="openCancerPrevention()"> How to prevent Cancer </button>
 	<button> Feedback </button>
 	
 	<script>
 		function openBarGraph() {
-			window.location.href = "bargraph.html";
+			window.location.href = "stackedbarchart.html";
+		}
+		function openLineGraph() {
+			window.location.href = "linegraph.html";
+		}
+		function openPieChart() {
+			window.location.href = "PieChart.html";
+		}
+		function openCancerPrevention() {
+			window.location.href = "story.html";
 		}
 	</script>
 	<br>
