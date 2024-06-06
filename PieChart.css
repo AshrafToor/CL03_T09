@@ -1,4 +1,3 @@
-
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -26,14 +25,41 @@ body {
     justify-content: center;
     gap: 50px;
     margin-top: 30px;
+    flex-wrap: wrap;
 }
 
 .chart-container {
-    width: 400px;
-    height: 400px;
+    width: 350px;
+    height: 350px;
 }
 
 canvas {
     width: 100% !important;
     height: auto !important;
+}
+
+.common-legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 80px;
+    gap: 10px;
+}
+
+.common-legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.common-legend-item span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.chart-container h2 {
+    margin-bottom: 10;
 }
