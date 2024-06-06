@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.year-buttons {
+    margin: 20px;
+}
+
+.year-buttons button {
+    background-color: #ffa07a;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.year-buttons button:hover {
+    background-color: #ff7f50;
+}
+
+.charts {
+    display: flex;
+    justify-content: center;
+    gap: 150px;
+    margin-top: 26px;
+    flex-wrap: wrap;
+}
+
+.chart-container {
+    width: 300px;
+    height: 300px;
+}
+
+.common-legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 170px;
+    gap: 10px;
+}
+
+.common-legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.common-legend-item span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.chart-container h2 {
+    margin-bottom: 10;
+}
+
+.tooltip {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 10;
+}

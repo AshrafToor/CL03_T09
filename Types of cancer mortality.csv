@@ -1,0 +1,55 @@
+Type,Gender,Year,Count
+Lung,Female,2017,204403
+Breast,Female,2017,170534
+Colorectal,Female,2017,132933
+Pancreas,Female,2017,91506
+Ovary,Female,2017,56714
+Leukemia,Female,2017,47541
+Liver,Female,2017,30947
+Bladder,Female,2017,25947
+Melanoma of skin,Female,2017,24927
+Lung,Male,2017,365315
+Colorectal,Male,2017,157450
+Prostate,Male,2017,140707
+Pancreas,Male,2017,94046
+Leukemia,Male,2017,66191
+Liver,Male,2017,52750
+Stomach,Male,2017,43714
+Bladder,Male,2017,36287
+Melanoma of skin,Male,2017,31698
+Lung,Female,2019,209028
+Breast,Female,2019,177600
+Colorectal,Female,2019,135681
+Pancreas,Female,2019,96276
+Ovary,Female,2019,57932
+Leukemia,Female,2019,49741
+Liver,Female,2019,32947
+Bladder,Female,2019,27947
+Melanoma of skin,Female,2019,26927
+Lung,Male,2019,361652
+Colorectal,Male,2019,160728
+Prostate,Male,2019,143707
+Pancreas,Male,2019,99960
+Leukemia,Male,2019,67191
+Liver,Male,2019,54750
+Stomach,Male,2019,44714
+Bladder,Male,2019,38287
+Melanoma of skin,Male,2019,32698
+Lung,Female,2021,206180
+Breast,Female,2021,180191
+Colorectal,Female,2021,135439
+Pancreas,Female,2021,101054
+Ovary,Female,2021,57437
+Leukemia,Female,2021,50541
+Liver,Female,2021,31947
+Bladder,Female,2021,26947
+Melanoma of skin,Female,2021,25927
+Lung,Male,2021,350174
+Colorectal,Male,2021,162817
+Prostate,Male,2021,142707
+Pancreas,Male,2021,152422
+Leukemia,Male,2021,68191
+Liver,Male,2021,52750
+Stomach,Male,2021,43714
+Bladder,Male,2021,36287
+Melanoma of skin,Male,2021,31698
