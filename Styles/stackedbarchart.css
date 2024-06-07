@@ -29,7 +29,7 @@ h1 {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #00008b;
     border: none;
     color: white;
     padding: 10px 20px;
@@ -40,6 +40,10 @@ button {
     margin: 5px;
     cursor: pointer;
     border-radius: 4px;
+}
+
+button:hover {
+	background-color: #ADD8E6;
 }
 
 .chart {
@@ -73,4 +77,22 @@ footer {
     position: fixed; /* Fix it to the bottom */
     bottom: 0;
     left: 0;
+}
+
+.return {
+    position: static;
+    padding: 10px 20px;
+    background-color: #00008b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.return:hover {
+    background-color: #ADD8E6;
+}
+
+a {
+	color: #00008b;
 }

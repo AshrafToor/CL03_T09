@@ -15,7 +15,6 @@ main {
     max-width: 800px;
     margin: 0 auto;
     background-color: #f4f4f4;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 section {
@@ -66,7 +65,7 @@ img {
 }
 
 .return {
-    position: bottom;
+    position: static;
     padding: 10px 20px;
     background-color: #00008b;
     color: white;
