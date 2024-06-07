@@ -1,6 +1,6 @@
 // Function to load and parse CSV data using D3
 function loadCSVData(callback) {
-    d3.csv("Types of cancer mortality.csv").then(data => {
+    d3.csv("Data/Types_of_cancer_mortality.csv").then(data => {
         callback(data);
     });
 }

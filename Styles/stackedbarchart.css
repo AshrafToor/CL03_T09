@@ -1,0 +1,76 @@
+/*
+filename: Ashraf Toor
+author: Ashraf Toor
+created: 07/06/2024
+last modified: 07/06/2024
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Make sure the container takes the full height of the viewport */
+}
+
+h1, h2 {
+	text-align: center;
+    color: #333;
+}
+
+button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.chart {
+    width: 800px;
+    height: 400px;
+    margin: 20px auto;
+}
+
+.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 5px;
+    font: 12px sans-serif;
+    background: #ffffff;
+    border: 1px solid #000000;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+footer {
+    margin-top: auto;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}

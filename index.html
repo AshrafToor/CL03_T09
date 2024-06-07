@@ -2,40 +2,41 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8"/>
-	<meta name="description"	  content="Data Visualisation"/>
-	<meta name="keywords"		  content="HTML, CSS, D3"/>
-	<meta name="author"			  content="Ashraf Toor & Layani Jayasinghe"/>
-	
-	<title>Final Project - Data Visualisation</title>
-	
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Data Visualisation"/>
+    <meta name="keywords" content="HTML, CSS, D3"/>
+    <meta name="author" content="Ashraf Toor & Layani Jayasinghe"/>
+    <link rel="stylesheet" href="Styles\index.css">
+    <title>Final Project - Data Visualisation</title>
 </head>
-<body>
 
-	<h1>COS30045 - Data Visualisation</h1>
-	<h2>Global Health Wallet: Tracking Expenditure Across Borders</h2>
-	<button   onclick="openBarGraph()"> Bar Graph </button>
-	<button   onclick="openLineGraph()"> Line Graph </button>
-	<button   onclick="openPieChart()"> Pie Chart </button>
-	<button   onclick="openCancerPrevention()"> How to prevent Cancer </button>
-	<button> Feedback </button>
-	
-	<script>
-		function openBarGraph() {
-			window.location.href = "stackedbarchart.html";
-		}
-		function openLineGraph() {
-			window.location.href = "linegraph.html";
-		}
-		function openPieChart() {
-			window.location.href = "PieChart.html";
-		}
-		function openCancerPrevention() {
-			window.location.href = "story.html";
-		}
-	</script>
-	<br>
-	<br>
-	<footer style="color:grey">COS30045 Data Visualisation<br>Ashraf Toor - 104586656<br>Layani Jayasinghe - 104826310</footer>
+<body>
+    <div class="container">
+        <h1>COS30045 - Data Visualisation</h1>
+        <h2>Global Health Wallet: Tracking Expenditure Across Borders</h2>
+        <button onclick="openBarGraph()"> Bar Graph </button>
+        <button onclick="openLineGraph()"> Line Graph </button>
+        <button onclick="openPieChart()"> Pie Chart </button>
+        <button onclick="openCancerPrevention()"> How to prevent Cancer </button>
+    </div>
+    <footer>COS30045 Data Visualisation<br>Ashraf Toor - 104586656<br>Layani Jayasinghe - 104826310</footer>
+
+    <script>
+        function openBarGraph() {
+            window.location.href = "stackedbarchart.html";
+        }
+
+        function openLineGraph() {
+            window.location.href = "linegraph.html";
+        }
+
+        function openPieChart() {
+            window.location.href = "PieChart.html";
+        }
+
+        function openCancerPrevention() {
+            window.location.href = "story.html";
+        }
+    </script>
 </body>
 </html>

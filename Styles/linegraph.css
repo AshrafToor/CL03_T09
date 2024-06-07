@@ -1,0 +1,105 @@
+/*
+filename: Ashraf Toor
+author: Ashraf Toor
+created: 07/06/2024
+last modified: 07/06/2024
+*/
+.area {
+	fill: lightblue;
+	opacity: 0.7;
+}
+
+.line {
+	fill: none;
+	stroke-width: 2px;
+}
+
+.halfMilMark {
+	stroke: red;
+	stroke-dasharray: 5, 5;
+}
+
+.halfMilLabel {
+	fill: red;
+	font-size: 12px;
+}
+
+.axis text {
+	font-size: 12px;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+
+.tooltip {
+	position: absolute;
+	text-align: center;
+	width: auto;
+	padding: 5px;
+	font: 12px sans-serif;
+	background: #ffffff;
+    border: 1px solid #000000;
+	border-radius: 5px;
+	pointer-events: none;
+	display: none;
+    opacity: 0;
+}
+
+.mouse-over-dot {
+	fill: orange;
+	stroke: darkorange;
+	stroke-width: 2px;
+	r: 5;
+	display: none;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+h1 {
+	text-align: center;
+    color: #333;
+}
+
+#countryCheckboxes {
+    margin-top: 20px;
+}
+
+.checkbox {
+    margin-bottom: 10px;
+}
+
+#chart {
+    margin-top: 20px;
+}
+
+footer {
+    margin-top: auto;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
