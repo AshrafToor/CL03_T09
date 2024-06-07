@@ -1,18 +1,12 @@
-/*
-filename: Ashraf Toor
-author: Ashraf Toor
-created: 07/06/2024
-last modified: 07/06/2024
-*/
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
 }
 
 .container {
@@ -24,12 +18,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Make sure the container takes the full height of the viewport */
+    height: 100%; /* Full height of the parent */
 }
 
-h1, h2 {
-	text-align: center;
-    color: #333;
+#button-container {
+    display: center:
+	margin: 0 auto;
 }
 
 button {
@@ -41,7 +35,7 @@ button {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 10px;
+    margin: 5px; /* Add some margin for spacing between buttons */
     cursor: pointer;
     border-radius: 4px;
 }
