@@ -1,7 +1,8 @@
+/* Styling for the body element */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-	margin: 0;
+    margin: 0;
     padding: 0;
     background-color: #f4f4f4;
     display: flex;
@@ -9,25 +10,27 @@ body {
     min-height: 100vh;
 }
 
+/* Styling for the year buttons */
 .year-buttons {
     margin: 20px;
 }
 
 .year-buttons button {
     background-color: #00008b;
-	color: white;
+    color: white;
     border: none;
     padding: 10px 20px;
     margin: 0 10px;
     font-size: 16px;
     cursor: pointer;
-	border-radius: 5px;
+    border-radius: 5px;
 }
 
 .year-buttons button:hover {
     background-color: #ADD8E6;
 }
 
+/* Styling for the charts container */
 .charts {
     display: flex;
     justify-content: center;
@@ -36,11 +39,13 @@ body {
     flex-wrap: wrap;
 }
 
+/* Styling for each individual chart container */
 .chart-container {
     width: 300px;
     height: 300px;
 }
 
+/* Styling for the common legend */
 .common-legend {
     display: flex;
     justify-content: center;
@@ -63,16 +68,20 @@ body {
     margin-right: 10px;
 }
 
+/* Styling for chart titles */
 .chart-container h2 {
     margin-bottom: 10;
 }
 
+/* Styling for the tooltip */
 .tooltip {
     font-family: Arial, sans-serif;
     font-size: 14px;
     pointer-events: none;
     z-index: 10;
 }
+
+/* Styling for the footer */
 footer {
     margin-top: auto;
     background-color: #333;
@@ -81,10 +90,11 @@ footer {
     padding: 10px 0;
 }
 
+/* Styling for the return button */
 .return {
     position: fixed;
-    bottom: 75px; /* Adjust the distance from the bottom */
-    right: 20px; /* Adjust the distance from the right */
+    bottom: 75px;
+    right: 20px;
     padding: 10px 20px;
     background-color: #00008b;
     color: white;
@@ -97,6 +107,7 @@ footer {
     background-color: #ADD8E6;
 }
 
+/* Styling for links */
 a {
-	color: #00008b;
+    color: #00008b;
 }

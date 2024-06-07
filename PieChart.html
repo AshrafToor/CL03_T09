@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <!-- This part configures the D3.js library and CSS links, as well as the character encoding, page description, author, and keywords.-->
     <meta charset="UTF-8"/>
     <meta name="description" content="Data Visualisation"/>
     <meta name="keywords" content="HTML, CSS, D3"/>
@@ -11,18 +12,23 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
+    <!-- Page's main title -->
     <h1>Main Cancer Types</h1>
+    <!-- Buttons to choose the year that the data in the charts is displayed in -->
     <div class="year-buttons">
         <button onclick="updateCharts('2017')">2017</button>
         <button onclick="updateCharts('2019')">2019</button>
         <button onclick="updateCharts('2021')">2021</button>
     </div>
+    <!-- Synopsis of the chart's findings -->
 	<p>This chart illustrates the types of cancer causing deaths among men and women for the years 2017, 2019, and 2021. 
 	Each pie chart is divided by gender, showcasing the distribution of cancer types such as lung, breast, colorectal, 
 	liver, and others. The color-coded sections represent different cancer types, allowing for a clear comparison between genders. 
 	Lung cancer appears to be a significant cause of death for both men and women, while breast cancer is more prevalent in women. 
 	Understanding gender-specific cancer mortality rates is made easier with the use of this visual representation, which also helps 
-	to allocate resources and prioritise public health initiatives.</p>
+	to allocate resources and prioritise public health initiatives.</p>
+
+    <!-- Pie chart containers for men and women -->
     <div class="charts">
         <div class="chart-container" id="womenChartContainer">
             <h2>Women</h2>
@@ -30,10 +36,14 @@
         <div class="chart-container" id="menChartContainer">
             <h2>Men</h2>
         </div>
+    <!-- Container for the standard legend used in the charts-->
     </div>
     <div id="commonLegend" class="common-legend"></div>
+
+    <!-- The JavaScript file that generates the pie charts is linked here -->
     <script src="PieChart.js"></script>
-	
+
+	<!-- Return to Homepage link and footer information -->
     <br>
     <br>
 	<a class="return" href="index.html"> Return to Homepage</a>

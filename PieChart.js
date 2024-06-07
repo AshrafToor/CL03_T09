@@ -1,5 +1,6 @@
 // Function to load and parse CSV data using D3
 function loadCSVData(callback) {
+// Load the CSV file from the specified path
     d3.csv("Data/Types_of_cancer_mortality.csv").then(data => {
         callback(data);
     });
@@ -7,13 +8,17 @@ function loadCSVData(callback) {
 
 // Function to process CSV data and update charts
 function processData(data, year) {
+// Arrays to store data for women and men
     let womenData = [];
     let menData = [];
     let allLabels = new Set();
 
+// Iterate over each row of data
     data.forEach(row => {
         if (row.Year === year) {
+// Add the cancer type to the set of labels
             allLabels.add(row.Type);
+// Check the gender and push the data to the respective array
             if (row.Gender === 'Female') {
                 womenData.push({ label: row.Type, value: parseInt(row.Count), gender: 'Women' });
             } else if (row.Gender === 'Male') {
@@ -22,14 +27,19 @@ function processData(data, year) {
         }
     });
 
+// Convert the set of labels to an array and sort it
     const commonLabels = Array.from(allLabels).sort();
+// Sort the data arrays according to the sorted labels
     womenData = sortDataByLabels(womenData, commonLabels);
     menData = sortDataByLabels(menData, commonLabels);
 
+// Update the charts with the sorted data
     updateCharts(commonLabels, womenData, menData);
+// Update the legend with the sorted labels
     updateLegend(commonLabels);
 }
 
+// Function to sort data by labels
 function sortDataByLabels(data, labels) {
     return labels.map(label => data.find(d => d.label === label) || { label, value: 0 });
 }
@@ -60,34 +70,44 @@ function updateCharts(labels, womenData, menData) {
 
 // Function to create pie chart using D3
 function createPieChart(container, data, labels, gender) {
+// Set the width, height, and radius of the pie chart
     const width = 350, height = 350, radius = Math.min(width, height) / 2;
+// Define the color scale using the labels and custom color palette
     const color = d3.scaleOrdinal()
         .domain(labels)
         .range(labels.map(label => customColorPalette[label] || "#cccccc"));
 
+// Remove any existing SVG elements from the container
     d3.select(container).select("svg").remove();
 
+// Create a new SVG element and set its dimensions
     const svg = d3.select(container).append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")
         .attr("transform", `translate(${width / 2},${height / 2})`);
 
+// Create the pie layout
     const pie = d3.pie().value(d => d.value).sort(null);  // Ensure order is consistent
+// Create the arc generator
     const arc = d3.arc().innerRadius(0).outerRadius(radius);
+// Calculate the total value of the data
 
     const totalValue = data.reduce((acc, d) => acc + d.value, 0);
 
+// Bind data to the arcs and create groups for each arc
     const arcs = svg.selectAll("arc")
         .data(pie(data))
         .enter().append("g")
         .attr("class", "arc");
 
+// Append paths to each arc and set the fill color
     arcs.append("path")
         .attr("d", arc)
         .attr("fill", d => color(d.data.label))
         .each(function(d) { this._current = d; })  // Store the initial angles
         .on("mouseover", function(event, d) {
+// Change opacity and show tooltip on mouseover
             d3.select(this).style("opacity", 0.7);
             const percentage = ((d.data.value / totalValue) * 100).toFixed(2);
             tooltip.style("visibility", "visible")
@@ -97,15 +117,17 @@ function createPieChart(container, data, labels, gender) {
                        (${percentage}%)`);
         })
         .on("mousemove", function(event) {
+// Move the tooltip with the mouse
             tooltip.style("top", (event.pageY - 40) + "px")
                 .style("left", (event.pageX + 20) + "px");
         })
         .on("mouseout", function() {
+// Reset opacity and hide tooltip on mouseout
             d3.select(this).style("opacity", 1);
             tooltip.style("visibility", "hidden");
         });
 
-    // Transition animation
+// Add transition animation for the arcs
     arcs.selectAll("path")
         .transition()
         .duration(1000)
@@ -123,6 +145,7 @@ function updateLegend(labels) {
     const legendContainer = document.getElementById('commonLegend');
     legendContainer.innerHTML = '';
 
+// Define the color scale using the labels and custom color palette
     const color = d3.scaleOrdinal()
         .domain(labels)
         .range(labels.map(label => customColorPalette[label] || "#cccccc"));

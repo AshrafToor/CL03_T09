@@ -1,3 +1,4 @@
+/* Styling for the body element */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -5,11 +6,13 @@ body {
     background-color: #f4f4f4;
 }
 
+/* Styling for the main title */
 h1 {	
     color: #333;
-	text-align: center;
+    text-align: center;
 }
 
+/* Styling for the main content area */
 main {
     padding: 1rem;
     max-width: 800px;
@@ -17,29 +20,35 @@ main {
     background-color: #f4f4f4;
 }
 
+/* Styling for sections within the main content */
 section {
     margin-bottom: 1rem;
 }
 
+/* Styling for section titles */
 h2 {
     color: #333;
     border-bottom: 2px solid #00008b;
     padding-bottom: 0.5rem;
 }
 
+/* Styling for paragraph text */
 p {
     line-height: 1.6;
 }
 
+/* Styling for unordered lists */
 ul {
     list-style-type: none;
     padding: 0;
 }
 
+/* Styling for list items within unordered lists */
 ul li {
     margin: 0.5rem 0;
 }
 
+/* Styling for links within list items */
 ul li a {
     color: #00008b;
     text-decoration: none;
@@ -49,6 +58,7 @@ ul li a:hover {
     text-decoration: underline;
 }
 
+/* Styling for the footer */
 footer {
     margin-top: auto;
     background-color: #333;
@@ -57,13 +67,14 @@ footer {
     padding: 10px 0;
 }
 
-
+/* Styling for images */
 img {
     max-width: 100%;
     height: auto;
     margin: 1rem 0;
 }
 
+/* Styling for the return button */
 .return {
     position: fixed;
     bottom: 75px; /* Adjust the distance from the bottom */
