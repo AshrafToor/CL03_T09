@@ -41,7 +41,7 @@ body {
     display: flex;
     flex-direction: column;
 	display: in-line-block;
-    align-items: left; /* Center content horizontally */
+    align-items: center; /* Center content horizontally */
     justify-content: center; /* Center content vertically */
     min-height: 100vh;
     margin: 0;
@@ -52,21 +52,18 @@ body {
 /* Style for the chart */
 .chart {
     width: 100%;
-	
     max-width: 400px; /* Adjust the width of the chart container */
     height: 400px;
-    margin: 80px auto; /* Center horizontally and adjust vertical margin */
-    order: 0; /* Reorder the chart to appear after the form */
+    margin: 20px auto; /* Center horizontally and adjust vertical margin */
 }
 
 /* Style for the container */
 .container {
     display: flex;
-    flex-direction: row-reverse; /* Reverse the order of the flex items */
     align-items: center; /* Center content vertically */
     justify-content: center; /* Center content horizontally */
     max-width: 800px;
-    margin: 0 auto; /* Center the container */
+    margin: 10 auto; /* Center the container */
 }
 
 /* Style for the tooltip */
@@ -113,10 +110,6 @@ footer {
 /* Style for anchor tags */
 a {
     color: #00008b;
-}
-.center {
-	
-	justify-content: center;
 }
 
 p {
