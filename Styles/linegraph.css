@@ -50,8 +50,8 @@ last modified: 07/06/2024
 }
 
 .mouse-over-dot {
-	fill: orange;
-	stroke: darkorange;
+	fill: darkblue;
+	stroke: darkblue;
 	stroke-width: 2px;
 	r: 5;
 	display: none;
