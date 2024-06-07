@@ -104,6 +104,7 @@ footer {
     padding: 10px 0;
 }
 
+/* Style for the return button */
 .return {
     position: fixed;
     bottom: 75px; /* Adjust the distance from the bottom */
@@ -120,6 +121,7 @@ footer {
     background-color: #ADD8E6;
 }
 
+/* Style for anchor tags */
 a {
     color: #00008b;
 }
