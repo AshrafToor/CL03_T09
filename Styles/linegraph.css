@@ -103,3 +103,27 @@ footer {
     text-align: center;
     padding: 10px 0;
 }
+
+.return {
+    position: fixed;
+    bottom: 75px; /* Adjust the distance from the bottom */
+    right: 20px; /* Adjust the distance from the right */
+    padding: 10px 20px;
+    background-color: #00008b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.return:hover {
+    background-color: #ADD8E6;
+}
+
+a {
+    color: #00008b;
+}
+
+p {
+	text-align: center;
+}

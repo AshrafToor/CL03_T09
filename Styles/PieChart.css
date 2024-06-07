@@ -21,6 +21,7 @@ body {
     margin: 0 10px;
     font-size: 16px;
     cursor: pointer;
+	border-radius: 5px;
 }
 
 .year-buttons button:hover {
