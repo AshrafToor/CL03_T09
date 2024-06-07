@@ -70,3 +70,18 @@ img {
     height: auto;
     margin: 1rem 0;
 }
+
+.return {
+    position: absolute;
+    bottom: 70px; /* Adjust as necessary for spacing above footer */
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #00008b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.return:hover {
+    background-color: #4

@@ -5,23 +5,38 @@ created: 07/06/2024
 last modified: 07/06/2024
 */
 
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 h1, h2 {
-	text-align: center;
     color: #333;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Adds space between buttons */
+    margin-top: 20px;
 }
 
 button {
@@ -33,7 +48,6 @@ button {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 5px;
     cursor: pointer;
     border-radius: 4px;
 }
