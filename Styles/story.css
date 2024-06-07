@@ -5,22 +5,16 @@ body {
     background-color: #f4f4f4;
 }
 
-header {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-}
-
-h1 {
-    margin: 0;
+h1 {	
+    color: #333;
+	text-align: center;
 }
 
 main {
     padding: 1rem;
     max-width: 800px;
     margin: 0 auto;
-    background-color: white;
+    background-color: #f4f4f4;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -30,7 +24,7 @@ section {
 
 h2 {
     color: #333;
-    border-bottom: 2px solid #4CAF50;
+    border-bottom: 2px solid #00008b;
     padding-bottom: 0.5rem;
 }
 
@@ -48,7 +42,7 @@ ul li {
 }
 
 ul li a {
-    color: #4CAF50;
+    color: #00008b;
     text-decoration: none;
 }
 
@@ -72,9 +66,7 @@ img {
 }
 
 .return {
-    position: absolute;
-    bottom: 70px; /* Adjust as necessary for spacing above footer */
-    right: 20px;
+    position: bottom;
     padding: 10px 20px;
     background-color: #00008b;
     color: white;
