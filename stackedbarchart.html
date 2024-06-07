@@ -17,7 +17,7 @@
 
     <div id="button-container">
         <button id="btn2017">2017</button>
-        <button id="btn2019">2019</button>
+        <button id="btn2021">2021</button>
     </div>
 
     <h2 id="yearHeading" class="hidden"></h2>
@@ -245,9 +245,9 @@
             document.querySelector(".chart").classList.remove("hidden");
         });
 
-        document.getElementById("btn2019").addEventListener("click", function() {
-            loadData("Data/2019_Mortality_Rates.csv", 2019);
-            document.getElementById("yearHeading").innerText = "Year 2019";
+        document.getElementById("btn2021").addEventListener("click", function() {
+            loadData("Data/2021_Mortality_Rates.csv", 2021);
+            document.getElementById("yearHeading").innerText = "Year 2021";
             document.getElementById("yearHeading").classList.remove("hidden");
             document.getElementById("controls").classList.remove("hidden");
             document.querySelector(".chart").classList.remove("hidden");
