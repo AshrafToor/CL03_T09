@@ -52,6 +52,10 @@ button {
     border-radius: 4px;
 }
 
+button:hover {
+    background-color: #ADD8E6;
+}
+	
 footer {
     position: fixed;
     left: 0;
