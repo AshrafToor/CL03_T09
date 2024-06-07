@@ -4,11 +4,12 @@ body {
     padding: 0;
     background-color: #f4f4f4;
     display: flex;
-    align-items: center; /* Center vertically */
-    height: 100vh; /* Full viewport height */
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
+    flex: 1; /* Grow to fill the remaining space */
     max-width: 800px;
     margin: auto;
     padding: 20px;
@@ -17,12 +18,14 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%; /* Full height of the parent */
+}
+
+h1 {
+    margin-bottom: 20px;
 }
 
 #button-container {
-    display: center:
-	margin: 0 auto;
+    margin-bottom: 20px;
 }
 
 button {
@@ -34,13 +37,14 @@ button {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 5px; /* Add some margin for spacing between buttons */
+    margin: 5px;
     cursor: pointer;
     border-radius: 4px;
 }
 
 .chart {
-    width: 800px;
+    width: 100%; /* Make it responsive */
+    max-width: 800px;
     height: 400px;
     margin: 20px auto;
 }
@@ -61,9 +65,12 @@ button {
 }
 
 footer {
-    margin-top: auto;
     background-color: #333;
     color: white;
     text-align: center;
     padding: 10px 0;
+    width: 100%;
+    position: fixed; /* Fix it to the bottom */
+    bottom: 0;
+    left: 0;
 }
