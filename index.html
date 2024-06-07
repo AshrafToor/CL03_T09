@@ -1,54 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="description" content="Data Visualisation"/>
+    <meta charset="UTF-8"/> 
+    <meta name="description" content="Data Visualisation"/> 
     <meta name="keywords" content="HTML, CSS, D3"/>
-    <meta name="author" content="Ashraf Toor & Layani Jayasinghe"/>
-    <link rel="stylesheet" href="Styles/index.css">
+    <meta name="author" content="Ashraf Toor & Layani Jayasinghe"/> 
+    <link rel="stylesheet" href="Styles/index.css"> <!-- Links to an external CSS file for styling -->
     <title>Final Project - Data Visualisation</title>
 </head>
 
 <body>
-    <div class="container">
-        <h1>COS30045 - Data Visualisation</h1>
-        <h2>Unveiling Cancer Mortality Trends: A Data-Driven Approach to Improving Health Outcomes</h2>
-        <div class="button-container">
+    <div class="container"> <!-- Container for the main content of the page -->
+        <h1>COS30045 - Data Visualisation</h1> 
+        <h2>Unveiling Cancer Mortality Trends: A Data-Driven Approach to Improving Health Outcomes</h2> 
+
+        <div class="button-container"> <!-- Container for the buttons -->
+            <!-- Button that opens a page with a bar graph -->
             <button onclick="openBarGraph()"> Cancer Mortality Rates </button>
+            <!-- Button that opens a page with a line graph -->
             <button onclick="openLineGraph()"> Expected Deaths due to Cancer </button>
+            <!-- Button that opens a page with a pie chart -->
             <button onclick="openPieChart()"> Main Types of Cancer Mortality </button>
+            <!-- Button that opens a page with information on cancer prevention -->
             <button onclick="openCancerPrevention()"> How to prevent Cancer </button>
         </div>
-		<br>
-		<br>
-		<br>
-		<p>This website gives important information about cancer mortality in OECD nations. There are four primary 
-		aspects to our platform. The first aspect displays gender-specific cancer death rates for 2017 and 2021.
-		The second aspect of this website shows expected cancer death rates in coming years till 2050. 
-		The third aspect covers the main cancer types by gender in 2017, 2019 and 2021. The 
-		strategies for preventing cancer are also provided. Our mission is to provide easily 
-		available and useful information to the users. Our goal is to enhance global health outcomes by promoting informed 
-		decision-making through an understanding of cancer patterns and prevention techniques.</p>
-		<br>
-		<br>
-		<br>
-	</div>
+
+        <br> <!-- Line breaks for spacing -->
+        <br>
+        <br>
+        
+        <!-- Paragraph explaining the content of the website -->
+        <p>This website gives important information about cancer mortality in OECD nations. There are four primary 
+        aspects to our platform. The first aspect displays gender-specific cancer death rates for 2017 and 2021.
+        The second aspect of this website shows expected cancer death rates in coming years till 2050. 
+        The third aspect covers the main cancer types by gender in 2017, 2019 and 2021. The 
+        strategies for preventing cancer are also provided. Our mission is to provide easily 
+        available and useful information to the users. Our goal is to enhance global health outcomes by promoting informed 
+        decision-making through an understanding of cancer patterns and prevention techniques.</p>
+        
+        <br> <!-- Line breaks for spacing -->
+        <br>
+        <br>
+    </div>
+
+ 
     <footer>COS30045 Data Visualisation<br>Ashraf Toor - 104586656<br>Layani Jayasinghe - 104826310</footer>
 
     <script>
+        // JavaScript functions to navigate to different pages
+
+        // Function to open the page with the bar graph
         function openBarGraph() {
             window.location.href = "stackedbarchart.html";
         }
 
+        // Function to open the page with the line graph
         function openLineGraph() {
             window.location.href = "linegraph.html";
         }
 
+        // Function to open the page with the pie chart
         function openPieChart() {
             window.location.href = "PieChart.html";
         }
 
+        // Function to open the page with information on cancer prevention
         function openCancerPrevention() {
             window.location.href = "story.html";
         }

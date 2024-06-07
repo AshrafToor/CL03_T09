@@ -1,83 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8" /> 
     <meta name="description" content="Data Visualisation" />
     <meta name="keywords" content="HTML, CSS, D3" />
-    <meta name="author" content="Ashraf Toor" />
-	<link rel="stylesheet" href="Styles\linegraph.css">
-    <title>Expected Deaths due to cancer</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    
+    <meta name="author" content="Ashraf Toor" /> 
+	<link rel="stylesheet" href="Styles/linegraph.css"> <!-- Links to an external CSS file for styling -->
+    <title>Expected Deaths due to cancer</title> 
+    <script src="https://d3js.org/d3.v7.min.js"></script> <!-- Includes the D3.js library for data visualization -->
+
 </head>
 
 <body>
 
+  
     <h1>Number of Expected Deaths in coming years due to Cancer</h1>
+
+	<!-- Paragraph describing the content and purpose of the chart -->
 	<p>This chart projects the number of expected deaths due to cancer in the coming years across various countries. 
 	Users can select specific countries to see their data trends. The graph includes Australia, Brazil, Canada, Germany, 
 	Japan, Korea, New Zealand, Poland, the United Kingdom, and the United States. The United States shows the highest 
 	projected increase in cancer deaths, surpassing 900,000 by 2050. The red line marks half a million deaths, providing 
-	a benchmark for comparison. A mouseover effect has also been added, so a exact estimated number can be seen in that year.
+	a benchmark for comparison. A mouseover effect has also been added, so an exact estimated number can be seen in that year.
 	This visualization highlights the growing impact of cancer and underscores the importance of targeted interventions 
-	and resource allocation to address future healthcare challenges. </p>
-    <!-- Checkboxes for Country Selection -->
+	and resource allocation to address future healthcare challenges.</p>
+
+    <!-- Container for country selection checkboxes -->
     <div id="countryCheckboxes"></div>
 
+    <!-- Container for the chart -->
     <p id="chart"></p>
 
-    <!-- Tooltip container -->
+    <!-- Tooltip container for displaying data on hover -->
     <div class="tooltip" id="tooltip"></div>
 
     <script>
-        var w = 1200; // Further Increased Width
-        var h = 400; // Height
-        var padding = 55; // Padding
-        var rightPadding = 200; // Further Increased Right Padding
-        var dataset; // Dataset
+        var w = 1200; // Width of the chart
+        var h = 400; // Height of the chart
+        var padding = 55; // Padding around the chart
+        var rightPadding = 200; // Additional padding on the right side
+        var dataset; // Variable to store the dataset
 
-        // Load the data
+        // Load the CSV data
         d3.csv("Data/Estimated_Deaths.csv", function (d) {
             return {
-                year: +d.Year,
-                country: d.Country,
-                cases: +d.Cases
+                year: +d.Year, // Convert year to a number
+                country: d.Country, // Store country name
+                cases: +d.Cases // Convert cases to a number
             };
         }).then(function (data) {
-            dataset = data;
+            dataset = data; // Assign loaded data to the dataset variable
 
+            // Get a unique list of countries
             var countries = Array.from(new Set(dataset.map(function (d) {
                 return d.country;
             })));
 
+            // Set color scale for different countries
             var colors = d3.scaleOrdinal(d3.schemeCategory10);
 
+            // Set the x-axis scale
             var xScale = d3.scaleLinear()
                 .domain([d3.min(dataset, function (d) { return d.year; }), d3.max(dataset, function (d) { return d.year; })])
                 .range([padding, w - rightPadding]);
 
+            // Set the y-axis scale
             var yScale = d3.scaleLinear()
                 .domain([0, d3.max(dataset, function (d) { return d.cases; })])
                 .range([h - padding, padding]);
 
+            // Create the SVG container for the chart
             var svg = d3.select("#chart")
                 .append("svg")
                 .attr("width", w)
                 .attr("height", h);
 
+            // Define the line generator function
             var line = d3.line()
                 .x(function (d) { return xScale(d.year); })
                 .y(function (d) { return yScale(d.cases); });
 
-            // Create tooltip
+            // Create the tooltip element
             var tooltip = d3.select("#tooltip");
 
             // Create a group for mouseover dots
             var dotGroup = svg.append("g").attr("class", "mouse-over-dots");
 
-            // Update the chart with selected countries
+            // Function to update the chart with selected countries
             function updateChart(selectedCountries) {
+                // Bind the data to country lines
                 var countryLines = svg.selectAll(".line")
                     .data(selectedCountries.map(function (country) {
                         return {
@@ -88,52 +100,71 @@
                         };
                     }), function (d) { return d.country; });
 
+                // Remove unselected country lines
                 countryLines.exit()
                     .transition()
                     .duration(1000)
                     .attr("opacity", 0)
                     .remove();
 
-                countryLines.enter()
-                    .append("path")
-                    .attr("class", "line")
-                    .attr("d", function (d) { return line(d.values); })
-                    .attr("stroke", function (d) { return colors(d.country); })
-                    .attr("opacity", 0)
-                    .on("mouseover", function (event, d) {
-                        tooltip.transition().duration(200).style("opacity", .9).style("display", "block");
-                    })
-                    .on("mousemove", function (event, d) {
-                        var mouseX = d3.pointer(event, this)[0];
-                        var year = Math.round(xScale.invert(mouseX));
-                        var dataPoint = d.values.find(function (point) { return point.year === year; });
+                // Append new country lines
+               countryLines.enter() 
+							.append("path")
+							.attr("class", "line") 
+							.attr("d", function (d) { return line(d.values); })
+							.attr("stroke", function (d) { return colors(d.country); }) // Set the stroke color of the line to be unique for each country, using a color scale
+							.attr("opacity", 0) // Initially set the opacity to 0 for a smooth transition effect
 
-                        if (dataPoint) {
-                            tooltip.html(dataPoint.country + "<br/>Year: " + dataPoint.year + "<br/>Cases: " + dataPoint.cases)
-                                .style("left", (event.pageX + 10) + "px")
-                                .style("top", (event.pageY - 28) + "px");
+							// Event handler for mouseover event on the line
+							.on("mouseover", function (event, d) {
+								// Transition the tooltip to visible over 200ms and set its display to block
+								tooltip.transition().duration(200).style("opacity", .9).style("display", "block");
+							})
+							
+							// Event handler for mousemove event on the line
+							.on("mousemove", function (event, d) {
+								var mouseX = d3.pointer(event, this)[0]; // Get the x-coordinate of the mouse relative to the SVG element
+								var year = Math.round(xScale.invert(mouseX)); // Convert the x-coordinate to a corresponding year using the inverse of the xScale
+								
+								// Find the data point corresponding to the year
+								var dataPoint = d.values.find(function (point) { return point.year === year; });
 
-                            dotGroup.selectAll("circle").remove();
-                            dotGroup.append("circle")
-                                .attr("class", "mouse-over-dot")
-                                .attr("cx", xScale(dataPoint.year))
-                                .attr("cy", yScale(dataPoint.cases))
-                                .style("display", "block");
-                        }
-                    })
-                    .on("mouseout", function (event, d) {
-                        tooltip.transition().duration(500).style("opacity", 0).style("display", "none");
-                        dotGroup.selectAll("circle").style("display", "none");
-                    })
-                    .transition()
-                    .duration(1000)
-                    .attr("opacity", 1);
+								if (dataPoint) { // If a data point for the given year is found
+									// Update the tooltip's HTML content with the country, year, and number of cases
+									tooltip.html(dataPoint.country + "<br/>Year: " + dataPoint.year + "<br/>Cases: " + dataPoint.cases)
+										// Position the tooltip near the mouse pointer
+										.style("left", (event.pageX + 10) + "px")
+										.style("top", (event.pageY - 28) + "px");
 
+									dotGroup.selectAll("circle").remove(); // Remove any existing circles in the dot group
+									dotGroup.append("circle") // Append a new circle for the mouse-over dot
+										.attr("class", "mouse-over-dot") // Assign a class for styling the dot
+										.attr("cx", xScale(dataPoint.year)) // Set the x-position of the circle based on the year
+										.attr("cy", yScale(dataPoint.cases)) // Set the y-position of the circle based on the number of cases
+										.style("display", "block"); // Make the circle visible
+								}
+							})
+
+							// Event handler for mouseout event on the line
+							.on("mouseout", function (event, d) {
+								// Transition the tooltip to invisible over 500ms and hide it
+								tooltip.transition().duration(500).style("opacity", 0).style("display", "none");
+								dotGroup.selectAll("circle").style("display", "none"); // Hide the mouse-over dot
+							})
+							
+							// Transition to final state over 1000ms
+							.transition()
+							.duration(1000)
+							.attr("opacity", 1); // Gradually make the line fully opaque
+
+
+                // Update existing country lines
                 countryLines.transition()
                     .duration(1000)
                     .attr("d", function (d) { return line(d.values); })
                     .attr("stroke", function (d) { return colors(d.country); });
 
+                // Bind the data to country labels
                 var countryLabels = svg.selectAll(".countryLabel")
                     .data(selectedCountries.map(function (country) {
                         var values = dataset.filter(function (d) {
@@ -145,16 +176,18 @@
                         };
                     }), function (d) { return d.country; });
 
+                // Remove unselected country labels
                 countryLabels.exit()
                     .transition()
                     .duration(1000)
                     .attr("opacity", 0)
                     .remove();
 
+                // Append new country labels
                 countryLabels.enter()
                     .append("text")
                     .attr("class", "countryLabel")
-                    .attr("x", function (d) { return Math.min(xScale(d.lastValue.year) + 10, w - rightPadding); }) 
+                    .attr("x", function (d) { return Math.min(xScale(d.lastValue.year) + 10, w - rightPadding); })
                     .attr("y", function (d) { return yScale(d.lastValue.cases); })
                     .attr("fill", function (d) { return colors(d.country); })
                     .attr("opacity", 0)
@@ -163,6 +196,7 @@
                     .attr("opacity", 1)
                     .text(function (d) { return d.country; });
 
+                // Update existing country labels
                 countryLabels.transition()
                     .duration(1000)
                     .attr("x", function (d) { return Math.min(xScale(d.lastValue.year) + 10, w - rightPadding); })
@@ -171,6 +205,7 @@
                     .text(function (d) { return d.country; });
             }
 
+            // Function to create checkboxes for country selection
             function createCheckboxes() {
                 var checkboxContainer = d3.select("#countryCheckboxes");
 
@@ -192,6 +227,7 @@
                     });
             }
 
+            // Function to update selected countries and chart
             function updateSelectedCountries() {
                 var selectedCountries = d3.selectAll("#countryCheckboxes input:checked")
                     .nodes()
@@ -202,28 +238,34 @@
                 updateChart(selectedCountries);
             }
 
+            // Initialize checkboxes and chart
             createCheckboxes();
-            updateChart(countries); 
+            updateChart(countries); // Initially display all countries
 
+            // Create the x-axis
             var xAxis = d3.axisBottom()
                 .scale(xScale)
                 .ticks(8)
                 .tickFormat(d3.format("d"));
 
+            // Create the y-axis
             var yAxis = d3.axisLeft()
                 .scale(yScale)
                 .ticks(10);
 
+            // Append the x-axis to the chart
             svg.append("g")
                 .attr("class", "axis")
                 .attr("transform", "translate(0," + (h - padding) + ")")
                 .call(xAxis);
 
+            // Append the y-axis to the chart
             svg.append("g")
                 .attr("class", "axis")
                 .attr("transform", "translate(" + padding + ",0)")
                 .call(yAxis);
 
+            // Append a line indicating half a million deaths
             svg.append("line")
                 .attr("class", "halfMilMark")
                 .attr("x1", padding)
@@ -231,6 +273,7 @@
                 .attr("x2", w)
                 .attr("y2", yScale(500000));
 
+            // Label for the half a million deaths line
             svg.append("text")
                 .attr("class", "halfMilLabel")
                 .attr("x", padding + 10)
@@ -240,10 +283,19 @@
 
     </script>
 
+    <!-- Spacer to separate footer from content -->
     <br>
     <br>
+
+	<!-- Link to return to the homepage -->
 	<a class="return" href="index.html"> Return to Homepage</a>
-    <footer>COS30045 Data Visualisation<br>Ashraf Toor - 104586656<br>Layani Jayasinghe - 104826310</footer>
+
+    <!-- Footer with course information and author names -->
+    <footer>
+        COS30045 Data Visualisation<br>
+        Ashraf Toor - 104586656<br>
+        Layani Jayasinghe - 104826310
+    </footer>
 
 </body>
 

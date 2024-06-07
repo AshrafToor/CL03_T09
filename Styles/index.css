@@ -5,64 +5,71 @@ created: 07/06/2024
 last modified: 07/06/2024
 */
 
+/* Global styling for the body of the document */
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif; 
     margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    padding: 0; 
+    background-color: #f4f4f4; /* Sets a light gray background color */
+    display: flex; /* Enables flexbox layout */
+    flex-direction: column; 
+    min-height: 100vh; 
 }
 
+/* Styling for the main container */
 .container {
     max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    margin: 0 auto; /* Centers the container horizontally */
+    padding: 20px; /* Adds padding inside the container */
+    flex: 1; /* Allows the container to grow and shrink as needed */
+    display: flex; /* Enables flexbox layout */
+    flex-direction: column; 
     justify-content: center;
-    align-items: center;
-    text-align: center;
+    align-items: center; 
+    text-align: center; /* Centers text inside the container */
 }
 
+/* Styling for headings */
 h1, h2 {
-    color: #333;
+    color: #333; /* Sets the text color to dark gray */
 }
 
+/* Styling for the button container */
 .button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; /* Enables flexbox layout */
+    justify-content: center;]
+    align-items: center; /* Aligns buttons in the middle vertically */
     gap: 10px; /* Adds space between buttons */
-    margin-top: 20px;
+    margin-top: 20px; 
 }
 
+/* Styling for buttons */
 button {
-    background-color: #00008b;
-    border: none;
-    color: white;
+    background-color: #00008b; /* Sets the background color to dark blue */
+    border: none; 
+    color: white; /* Sets the text color to white */
     padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
+    text-align: center; /* Centers the text inside the button */
+    text-decoration: none; 
+    display: inline-block; /* Allows for inline-block layout */
+    font-size: 16px; /* Sets the font size */
+    cursor: pointer; /* Changes cursor to pointer when hovering */
+    border-radius: 4px; 
 }
 
+/* Styling for button hover state */
 button:hover {
-    background-color: #ADD8E6;
+    background-color: #ADD8E6; /* Changes background color to light blue on hover */
 }
-	
+
+/* Styling for the footer */
 footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
+    position: fixed; /* Fixes the footer to the bottom of the page */
+    left: 0; /* Aligns the footer to the left edge */
+    bottom: 0; /* Aligns the footer to the bottom edge */
     width: 100%;
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
+    background-color: #333; /* Sets the background color to dark gray */
+    color: white; ]
+    text-align: center; /* Centers the text horizontally */
+    padding: 10px 0; 
 }

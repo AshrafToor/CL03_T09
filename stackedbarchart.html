@@ -8,48 +8,51 @@
     <meta name="author" content="Ashraf Toor & Layani Jayasinghe" />
     <link rel="stylesheet" href="Styles\stackedbarchart.css">
     <title>Cancer Mortality Rates</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script> <!-- Load D3.js library -->
 </head>
 
 <body>
     <h1>Cancer Mortality Rates</h1>
 
     <div id="button-container">
-        <button id="btn2017">2017</button>
-        <button id="btn2021">2021</button>
+        <button id="btn2017">2017</button> <!-- Button to load data for 2017 -->
+        <button id="btn2021">2021</button> <!-- Button to load data for 2021 -->
     </div>
-	<p>This interactive chart shows cancer death rates per 100,000 population by gender for the years 2017 and 2021 across different countries. 
-	Users can select specific countries and genders to see the data. The bar graph includes countries like Brazil, Korea, 
-	Japan, the United States, Australia, Canada, Germany, New Zealand, the United Kingdom, and Poland. In the chart, orange 
-	represents women and blue represents men. This visualization helps understand cancer death trends, between countries,
-	and between genders, providing useful information for public health planning and resource allocation.</p>
+    <p>
+        This interactive chart shows cancer death rates per 100,000 population by gender for the years 2017 and 2021 across different countries.
+        Users can select specific countries and genders to see the data. The bar graph includes countries like Brazil, Korea, Japan, the United States, Australia, Canada, Germany, New Zealand, the United Kingdom, and Poland.
+        In the chart, orange represents women and blue represents men. This visualization helps understand cancer death trends, between countries, and between genders, providing useful information for public health planning and resource allocation.
+    </p>
 
-    <h2 id="yearHeading" class="hidden"></h2>
-<div class= "center">
-    <div id="controls" class="hidden">
-        <div>
-            <label>Select Gender:</label><br>
-            <label><input type="checkbox" class="gender" value="Men"> Men</label>
-            <label><input type="checkbox" class="gender" value="Women"> Women</label>
+    <h2 id="yearHeading" class="hidden"></h2> <!-- Placeholder for year heading, initially hidden -->
+
+    <div class="center">
+        <div id="controls" class="hidden"> <!-- Control section for filtering, initially hidden -->
+            <div>
+                <label>Select Gender:</label><br>
+                <label><input type="checkbox" class="gender" value="Men"> Men</label> <!-- Checkbox for selecting Men -->
+                <label><input type="checkbox" class="gender" value="Women"> Women</label> <!-- Checkbox for selecting Women -->
+            </div>
+
+            <div>
+                <label>Select Country:</label><br>
+                <div id="country"></div> <!-- Container for country checkboxes -->
+            </div>
         </div>
 
-        <div>
-            <label>Select Country:</label><br>
-            <div id="country"></div>
-        </div>
+        <div class="chart hidden"></div> <!-- Placeholder for the chart, initially hidden -->
+
+        <div class="tooltip"></div> <!-- Tooltip for displaying additional information -->
     </div>
-
-    <div class="chart hidden"></div>
-
-    <div class="tooltip"></div>
 
     <script>
+        // Function to load data from CSV and update chart
         function loadData(file, year) {
             d3.csv(file).then(function(data) {
                 // Convert string numbers to numeric values
                 data.forEach(function(d) {
-                    d.Men = +d.Men;
-                    d.Women = +d.Women;
+                    d.Men = +d.Men; // Convert Men values to numbers
+                    d.Women = +d.Women; // Convert Women values to numbers
                 });
 
                 // Extract unique country names
@@ -57,15 +60,15 @@
 
                 // Append country checkboxes to the div element
                 var countryDiv = d3.select("#country");
-                countryDiv.selectAll("*").remove();
+                countryDiv.selectAll("*").remove(); // Clear existing country checkboxes
                 countries.forEach(function(country) {
                     countryDiv.append("label")
                         .append("input")
                         .attr("type", "checkbox")
                         .attr("class", "country")
-                        .attr("value", country);
-                    countryDiv.append("span").text(" " + country + " ");
-                    countryDiv.append("br");
+                        .attr("value", country); // Set checkbox value to the country name
+                    countryDiv.append("span").text(" " + country + " "); // Add text next to the checkbox
+                    countryDiv.append("br"); // Line break for next checkbox
                 });
 
                 // Function to update the chart based on selected filters
@@ -99,7 +102,7 @@
                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                     var xScale = d3.scaleBand()
-                        .domain(filteredData.map(function(d) { return d.Country; }))
+                        .domain(filteredData.map(function(d) { return d.Country; })) // Set x-axis domain to the selected countries
                         .range([0, width])
                         .paddingInner(0.1);
 
@@ -120,7 +123,7 @@
                     var color = d3.scaleOrdinal(d3.schemeCategory10);
 
                     var stack = d3.stack()
-                        .keys(selectedGenders);
+                        .keys(selectedGenders); // Stack data by selected genders
 
                     var series = stack(filteredData);
 
@@ -137,9 +140,9 @@
                         .data(function(d) { return d; })
                         .enter()
                         .append("rect")
-                        .attr("x", function(d, i) { return xScale(filteredData[i].Country) + xScale.bandwidth() / 4; })
-                        .attr("y", function(d) { return yScale(d[1]); })
-                        .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
+                        .attr("x", function(d, i) { return xScale(filteredData[i].Country) + xScale.bandwidth() / 4; }) // Set x position for the rect
+                        .attr("y", function(d) { return yScale(d[1]); }) // Set y position for the rect
+                        .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); }) // Set height based on data values
                         .attr("width", xScale.bandwidth() / 2)
                         .on("mouseover", function(event, d) {
                             tooltip.transition()
@@ -158,7 +161,7 @@
                         });
                 }
 
-                // Initial chart rendering
+                // Function to initially render the chart with all data
                 function initialChart() {
                     // Remove existing chart
                     d3.select(".chart").selectAll("*").remove();
@@ -176,7 +179,7 @@
                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                     var xScale = d3.scaleBand()
-                        .domain(data.map(function(d) { return d.Country; }))
+                        .domain(data.map(function(d) { return d.Country; })) // Set x-axis domain to all countries in the data
                         .range([0, width])
                         .paddingInner(0.1);
 
@@ -195,7 +198,7 @@
                     var color = d3.scaleOrdinal(d3.schemeCategory10);
 
                     var stack = d3.stack()
-                        .keys(["Men", "Women"]);
+                        .keys(["Men", "Women"]); // Stack data by both Men and Women
 
                     var series = stack(data);
 
@@ -220,7 +223,7 @@
                             tooltip.transition()
                                 .duration(200)
                                 .style("opacity", .9);
-                            var gender = this.parentNode.__data__.key;
+                            var gender = this.parentNode.__data__.key; // Get gender from the parent node data
                             tooltip.html(d[1] - d[0] + " " + gender + " (" + d.data.Country + ")")
                                 .style("left", (event.pageX) + "px")
                                 .style("top", (event.pageY - 28) + "px");
@@ -241,33 +244,38 @@
             });
         }
 
+        // Event listener for 2017 button click
         document.getElementById("btn2017").addEventListener("click", function() {
-            loadData("Data/2017_Mortality_Rates.csv", 2017);
-            document.getElementById("yearHeading").innerText = "Year 2017";
-            document.getElementById("yearHeading").classList.remove("hidden");
-            document.getElementById("controls").classList.remove("hidden");
-            document.querySelector(".chart").classList.remove("hidden");
+            loadData("Data/2017_Mortality_Rates.csv", 2017); // Load 2017 data
+            document.getElementById("yearHeading").innerText = "Year 2017"; // Update heading to 2017
+            document.getElementById("yearHeading").classList.remove("hidden"); // Show year heading
+            document.getElementById("controls").classList.remove("hidden"); // Show controls
+            document.querySelector(".chart").classList.remove("hidden"); // Show chart container
         });
 
+        // Event listener for 2021 button click
         document.getElementById("btn2021").addEventListener("click", function() {
-            loadData("Data/2021_Mortality_Rates.csv", 2021);
-            document.getElementById("yearHeading").innerText = "Year 2021";
-            document.getElementById("yearHeading").classList.remove("hidden");
-            document.getElementById("controls").classList.remove("hidden");
-            document.querySelector(".chart").classList.remove("hidden");
+            loadData("Data/2021_Mortality_Rates.csv", 2021); // Load 2021 data
+            document.getElementById("yearHeading").innerText = "Year 2021"; // Update heading to 2021
+            document.getElementById("yearHeading").classList.remove("hidden"); // Show year heading
+            document.getElementById("controls").classList.remove("hidden"); // Show controls
+            document.querySelector(".chart").classList.remove("hidden"); // Show chart container
         });
 
         // Initially hide chart and controls
-        document.getElementById("controls").classList.add("hidden");
-        document.querySelector(".chart").classList.add("hidden");
+        document.getElementById("controls").classList.add("hidden"); // Hide controls by default
+        document.querySelector(".chart").classList.add("hidden"); // Hide chart by default
 
     </script>
-</div>
-    <br>
-    <br>
-    <a class="return" href="index.html"> Return to Homepage</a>
-    <footer>COS30045 Data Visualisation<br>Ashraf Toor - 104586656<br>Layani Jayasinghe - 104826310</footer>
 
+    <br>
+    <br>
+    <a class="return" href="index.html"> Return to Homepage</a> <!-- Link to return to the homepage -->
+    <footer>
+        COS30045 Data Visualisation<br>
+        Ashraf Toor - 104586656<br>
+        Layani Jayasinghe - 104826310
+    </footer>
 </body>
 
 </html>
