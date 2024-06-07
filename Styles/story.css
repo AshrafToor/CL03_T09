@@ -65,7 +65,9 @@ img {
 }
 
 .return {
-    position: static;
+    position: fixed;
+    bottom: 75px; /* Adjust the distance from the bottom */
+    right: 20px; /* Adjust the distance from the right */
     padding: 10px 20px;
     background-color: #00008b;
     color: white;

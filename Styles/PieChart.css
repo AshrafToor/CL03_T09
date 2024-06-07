@@ -14,7 +14,7 @@ body {
 }
 
 .year-buttons button {
-    background-color: #ffa07a;
+    background-color: #00008b;
     border: none;
     padding: 10px 20px;
     margin: 0 10px;
@@ -23,7 +23,7 @@ body {
 }
 
 .year-buttons button:hover {
-    background-color: #ff7f50;
+    background-color: #ADD8E6;
 }
 
 .charts {
@@ -77,4 +77,24 @@ footer {
     color: white;
     text-align: center;
     padding: 10px 0;
+}
+
+.return {
+    position: fixed;
+    bottom: 75px; /* Adjust the distance from the bottom */
+    right: 20px; /* Adjust the distance from the right */
+    padding: 10px 20px;
+    background-color: #00008b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.return:hover {
+    background-color: #ADD8E6;
+}
+
+a {
+	color: #00008b;
 }

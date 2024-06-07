@@ -2,17 +2,16 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="description" content="Data Visualisation"/>
-    <meta name="keywords" content="HTML, CSS, D3"/>
-    <meta name="author" content="Ashraf Toor & Layani Jayasinghe"/>
-	<link rel="stylesheet" href="Styles\stackedbarchart.css">
+    <meta charset="UTF-8" />
+    <meta name="description" content="Data Visualisation" />
+    <meta name="keywords" content="HTML, CSS, D3" />
+    <meta name="author" content="Ashraf Toor & Layani Jayasinghe" />
+    <link rel="stylesheet" href="Styles\stackedbarchart.css">
     <title>Cancer Mortality Rates</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
 <body>
-
     <h1>Cancer Mortality Rates</h1>
 
     <div id="button-container">
@@ -21,7 +20,7 @@
     </div>
 
     <h2 id="yearHeading" class="hidden"></h2>
-
+<div class= "center">
     <div id="controls" class="hidden">
         <div>
             <label>Select Gender:</label><br>
@@ -56,10 +55,10 @@
                 countryDiv.selectAll("*").remove();
                 countries.forEach(function(country) {
                     countryDiv.append("label")
-                              .append("input")
-                              .attr("type", "checkbox")
-                              .attr("class", "country")
-                              .attr("value", country);
+                        .append("input")
+                        .attr("type", "checkbox")
+                        .attr("class", "country")
+                        .attr("value", country);
                     countryDiv.append("span").text(" " + country + " ");
                     countryDiv.append("br");
                 });
@@ -88,23 +87,23 @@
                     var height = 400 - margin.top - margin.bottom;
 
                     var svg = d3.select(".chart")
-                                .append("svg")
-                                .attr("width", width + margin.left + margin.right)
-                                .attr("height", height + margin.top + margin.bottom)
-                                .append("g")
-                                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                        .append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                        .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                     var xScale = d3.scaleBand()
-                                    .domain(filteredData.map(function(d) { return d.Country; }))
-                                    .range([0, width])
-                                    .paddingInner(0.1);
+                        .domain(filteredData.map(function(d) { return d.Country; }))
+                        .range([0, width])
+                        .paddingInner(0.1);
 
                     var yScale = d3.scaleLinear()
-                                    .domain([0, d3.max(filteredData, function(d) {
-                                        return selectedGenders.reduce(function(sum, gender) { return sum + d[gender]; }, 0);
-                                    })])
-                                    .nice()
-                                    .range([height, 0]);
+                        .domain([0, d3.max(filteredData, function(d) {
+                            return selectedGenders.reduce(function(sum, gender) { return sum + d[gender]; }, 0);
+                        })])
+                        .nice()
+                        .range([height, 0]);
 
                     svg.append("g")
                         .attr("transform", "translate(0," + height + ")")
@@ -123,35 +122,35 @@
                     var tooltip = d3.select(".tooltip");
 
                     var groups = svg.selectAll("g.stack")
-                                    .data(series)
-                                    .enter()
-                                    .append("g")
-                                    .attr("class", "stack")
-                                    .style("fill", function(d, i) { return color(i); });
+                        .data(series)
+                        .enter()
+                        .append("g")
+                        .attr("class", "stack")
+                        .style("fill", function(d, i) { return color(i); });
 
                     var rects = groups.selectAll("rect")
-                                    .data(function(d) { return d; })
-                                    .enter()
-                                    .append("rect")
-                                    .attr("x", function(d, i) { return xScale(filteredData[i].Country) + xScale.bandwidth() / 4; })
-                                    .attr("y", function(d) { return yScale(d[1]); })
-                                    .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
-                                    .attr("width", xScale.bandwidth() / 2)
-                                    .on("mouseover", function(event, d) {
-                                        tooltip.transition()
-                                               .duration(1000)
-											   .ease(d3.easeCubicInOut)
-                                               .style("opacity", .9);
-                                        var gender = this.parentNode.__data__.key; // Get the gender (Men/Women) from the parent node data
-                                        tooltip.html(d[1] - d[0] + " " + gender + " (" + d.data.Country + ")")
-                                               .style("left", (event.pageX) + "px")
-                                               .style("top", (event.pageY - 28) + "px");
-                                    })
-                                    .on("mouseout", function() {
-                                        tooltip.transition()
-                                               .duration(500)
-                                               .style("opacity", 0);
-                                    });
+                        .data(function(d) { return d; })
+                        .enter()
+                        .append("rect")
+                        .attr("x", function(d, i) { return xScale(filteredData[i].Country) + xScale.bandwidth() / 4; })
+                        .attr("y", function(d) { return yScale(d[1]); })
+                        .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
+                        .attr("width", xScale.bandwidth() / 2)
+                        .on("mouseover", function(event, d) {
+                            tooltip.transition()
+                                .duration(1000)
+                                .ease(d3.easeCubicInOut)
+                                .style("opacity", .9);
+                            var gender = this.parentNode.__data__.key; // Get the gender (Men/Women) from the parent node data
+                            tooltip.html(d[1] - d[0] + " " + gender + " (" + d.data.Country + ")")
+                                .style("left", (event.pageX) + "px")
+                                .style("top", (event.pageY - 28) + "px");
+                        })
+                        .on("mouseout", function() {
+                            tooltip.transition()
+                                .duration(500)
+                                .style("opacity", 0);
+                        });
                 }
 
                 // Initial chart rendering
@@ -165,21 +164,21 @@
                     var height = 400 - margin.top - margin.bottom;
 
                     var svg = d3.select(".chart")
-                                .append("svg")
-                                .attr("width", width + margin.left + margin.right)
-                                .attr("height", height + margin.top + margin.bottom)
-                                .append("g")
-                                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                        .append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                        .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                     var xScale = d3.scaleBand()
-                                    .domain(data.map(function(d) { return d.Country; }))
-                                    .range([0, width])
-                                    .paddingInner(0.1);
+                        .domain(data.map(function(d) { return d.Country; }))
+                        .range([0, width])
+                        .paddingInner(0.1);
 
                     var yScale = d3.scaleLinear()
-                                    .domain([0, d3.max(data, function(d) { return d.Men + d.Women; })])
-                                    .nice()
-                                    .range([height, 0]);
+                        .domain([0, d3.max(data, function(d) { return d.Men + d.Women; })])
+                        .nice()
+                        .range([height, 0]);
 
                     svg.append("g")
                         .attr("transform", "translate(0," + height + ")")
@@ -198,37 +197,37 @@
                     var tooltip = d3.select(".tooltip");
 
                     var groups = svg.selectAll("g.stack")
-                                    .data(series)
-                                    .enter()
-                                    .append("g")
-                                    .attr("class", "stack")
-                                    .style("fill", function(d, i) { return color(i); });
+                        .data(series)
+                        .enter()
+                        .append("g")
+                        .attr("class", "stack")
+                        .style("fill", function(d, i) { return color(i); });
 
                     var rects = groups.selectAll("rect")
-                                    .data(function(d) { return d; })
-                                    .enter()
-                                    .append("rect")
-                                    .attr("x", function(d, i) { return xScale(data[i].Country) + xScale.bandwidth() / 4; })
-                                    .attr("y", function(d) { return yScale(d[1]); })
-                                    .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
-                                    .attr("width", xScale.bandwidth() / 2)
-                                    .on("mouseover", function(event, d) {
-                                        tooltip.transition()
-                                               .duration(200)
-                                               .style("opacity", .9);
-                                        var gender = this.parentNode.__data__.key;
-                                        tooltip.html(d[1] - d[0] + " " + gender + " (" + d.data.Country + ")")
-                                               .style("left", (event.pageX) + "px")
-                                               .style("top", (event.pageY - 28) + "px");
-                                    })
-                                    .on("mouseout", function() {
-                                        tooltip.transition()
-                                               .duration(500)
-                                               .style("opacity", 0);
-                                    });
+                        .data(function(d) { return d; })
+                        .enter()
+                        .append("rect")
+                        .attr("x", function(d, i) { return xScale(data[i].Country) + xScale.bandwidth() / 4; })
+                        .attr("y", function(d) { return yScale(d[1]); })
+                        .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
+                        .attr("width", xScale.bandwidth() / 2)
+                        .on("mouseover", function(event, d) {
+                            tooltip.transition()
+                                .duration(200)
+                                .style("opacity", .9);
+                            var gender = this.parentNode.__data__.key;
+                            tooltip.html(d[1] - d[0] + " " + gender + " (" + d.data.Country + ")")
+                                .style("left", (event.pageX) + "px")
+                                .style("top", (event.pageY - 28) + "px");
+                        })
+                        .on("mouseout", function() {
+                            tooltip.transition()
+                                .duration(500)
+                                .style("opacity", 0);
+                        });
                 }
 
-                 // Initial chart rendering
+                // Initial chart rendering
                 initialChart();
 
                 // Event listeners for checkboxes
@@ -258,11 +257,12 @@
         document.querySelector(".chart").classList.add("hidden");
 
     </script>
-
+</div>
     <br>
     <br>
-	<a class="return" href="index.html"> Return to Homepage</a>
+    <a class="return" href="index.html"> Return to Homepage</a>
     <footer>COS30045 Data Visualisation<br>Ashraf Toor - 104586656<br>Layani Jayasinghe - 104826310</footer>
 
 </body>
+
 </html>
